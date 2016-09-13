@@ -6,76 +6,37 @@ using Xunit;
 
 namespace TddDemo
 {
-    public class Class1
+    public class H02CoreCSharp
     {
         [Fact]
-        public void MijnEersteTestMethode()
+        public void DoublePrecision()
         {
-            // Arrange
-            var geboorteDatum = new DateTime(1992, 10, 26);
-            var huidig = new DateTime(2016, 09, 12);
-
-            // Act
-            var leeftijd = BerekenLeeftijd(geboorteDatum, huidig);
-
-            // Assert
-            Assert.Equal(23, leeftijd);
+            Assert.True(0.1 + 0.2 == 0.3);
         }
 
         [Fact]
-        public void EenAndereDatum()
+        public void SwitchStatement()
         {
-            // Arrange
-            var geboorteDatum = new DateTime(1991, 12, 31);
-            var huidig = new DateTime(2016, 09, 12);
+            string country = "NL";
+            string language;
 
-            // Act
-            var leeftijd = BerekenLeeftijd(geboorteDatum, huidig);
-
-            // Assert
-            Assert.Equal(24, leeftijd);
-        }
-
-        [Fact]
-        public void GeboorteDatumInDeToekomstGeeftFoutmelding()
-        {
-            // Arrange
-            var geboorteDatum = new DateTime(2017, 12, 31);
-            var huidig = new DateTime(2016, 09, 12);
-
-            // Act + Assert
-            Assert.Throws(typeof(ArgumentException) , () => BerekenLeeftijd(geboorteDatum, huidig));
-        }
-
-        [Fact]
-        public void WatAlsIemandNogNietJarigIsGeweest()
-        {
-            // Arrange
-            var geboorteDatum = new DateTime(2016, 09, 11);
-            var huidig = new DateTime(2016, 09, 12);
-
-            // Act
-            var leeftijd = BerekenLeeftijd(geboorteDatum, huidig);
-
-            // Assert
-            Assert.Equal(0, leeftijd);
-        }
-
-        private int BerekenLeeftijd(DateTime geboorteDatum, DateTime huidig)
-        {
-            if (geboorteDatum > huidig)
+            switch (country)
             {
-                throw new ArgumentException($"Geboortedatum {geboorteDatum} moet kleiner zijn dan {huidig}.", 
-                    nameof(geboorteDatum));
-            }
+                default:
+                    language = "undefined";
+                    break;
 
-            var result = huidig.Year - geboorteDatum.Year;
-            if (geboorteDatum.Month != huidig.Month || geboorteDatum.Day >= huidig.Day)
-            {
-                result--;
-            }
+                case "NL":
+                case "BE":
+                    language = "Dutch";
+                    break;
 
-            return result;
+
+                case "US":
+                case "UK":
+                    language = "English";
+                    break;
+            }
         }
     }
 }
