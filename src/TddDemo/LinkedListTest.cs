@@ -18,7 +18,7 @@ namespace TddDemo
             list.Add(3);
 
             // Assert
-            Assert.Equal<int>(1, list.Count);
+            Assert.Equal(1, list.Count);
         }
 
         class LinkedList
