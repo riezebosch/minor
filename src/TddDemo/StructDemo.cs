@@ -29,5 +29,26 @@ namespace TddDemo
             i = 7;
             Assert.Equal(6, j);
         }
+
+        [Fact]
+        public void SindsCSharp6MagJeZelfEenDefaultConstructorMakenVoorStructs()
+        {
+            var pt = new Point(2, 2);
+
+            Assert.Equal(2, pt.X);
+            Assert.Equal(2, pt.Y);
+        }
+
+        struct Point
+        {
+            public int X { set; get; }
+            public int Y;
+            public Point(int x, int y) 
+            {
+                X = x;
+                Y = y;
+            }
+        }
     }
+
 }
