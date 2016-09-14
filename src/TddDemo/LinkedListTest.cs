@@ -35,6 +35,36 @@ namespace TddDemo
             Assert.Equal(3, item);
         }
 
+        [Fact]
+        public void GivenAddedTwoItemsWhenGetLastThenSecondItemIsReturned()
+        {
+            // Arrange
+            var list = new LinkedList();
+            list.Add(3);
+            list.Add(5);
+
+            // Act
+            var item = list.Get(1);
+
+            // Assert
+            Assert.Equal(5, item);
+        }
+
+        [Fact]
+        public void GivenAddedTwoItemsWhenGetFirstThenFirstItemIsReturned()
+        {
+            // Arrange
+            var list = new LinkedList();
+            list.Add(3);
+            list.Add(5);
+
+            // Act
+            var item = list.Get(0);
+
+            // Assert
+            Assert.Equal(3, item);
+        }
+
         class LinkedList
         {
             private Node first;
@@ -43,13 +73,35 @@ namespace TddDemo
 
             public void Add(int item)
             {
-                first = new Node(item);
+                if (first != null)
+                {
+                    var node = first;
+                    while (node.Next != null)
+                    {
+                        node = node.Next;
+                    }
+
+                    node.Next = new Node(item);
+                }
+                else
+                {
+                    first = new Node(item);
+                }
+
                 Count++;
             }
 
             public object Get(int index)
             {
-                return first.Item;
+                var node = first;
+
+                // dit is een grapje van Eric Lippert!
+                while (index --> 0)
+                {
+                    node = node.Next;
+                }
+
+                return node.Item;
             }
 
             private class Node
@@ -60,6 +112,7 @@ namespace TddDemo
                 }
 
                 public object Item { get; internal set; }
+                public Node Next { get; internal set; }
             }
         }
     }
