@@ -70,7 +70,9 @@ namespace TddDemo
         public void WatZijnProperties()
         {
             var type = this.GetType();
-            foreach (var member in type.GetMembers(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
+            foreach (var member in type.GetMembers(BindingFlags.NonPublic | 
+                BindingFlags.Public | 
+                BindingFlags.Instance))
             {
                 _output.WriteLine(member.Name);
             }
