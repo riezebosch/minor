@@ -8,18 +8,27 @@ namespace TddDemo
 {
     public class LinkedListTest
     {
-        public int Count { get; private set; }
-
         [Fact]
         public void GivenEmptyListWhenAddThenCount1()
         {
-            Add(3);
-            Assert.Equal<int>(1, Count);
+            // Arrange
+            var list = new LinkedList();
+
+            // Act
+            list.Add(3);
+
+            // Assert
+            Assert.Equal<int>(1, list.Count);
         }
 
-        private void Add(int item)
+        class LinkedList
         {
-            Count++;
+            public int Count { get; private set; }
+
+            public void Add(int item)
+            {
+                Count++;
+            }
         }
     }
 }
