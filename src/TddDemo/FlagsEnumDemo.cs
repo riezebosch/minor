@@ -30,6 +30,9 @@ namespace TddDemo
             var benikopdonderdagaanwezig = (aanwezig & Dagen.Donderdag) == Dagen.Donderdag;
             Assert.True(benikopdonderdagaanwezig);
 
+            // NIEUW! Makkelijker om flag te controleren
+            Assert.True(aanwezig.HasFlag(Dagen.Donderdag));
+
             var printable = aanwezig.ToString();
             Assert.Equal("Maandag, Dinsdag, Woensdag, Donderdag", printable);
 
