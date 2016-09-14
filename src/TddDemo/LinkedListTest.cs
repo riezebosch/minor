@@ -111,8 +111,8 @@ namespace TddDemo
                     this.Item = item;
                 }
 
-                public object Item { get; internal set; }
-                public Node Next { get; internal set; }
+                public object Item { get; }
+                public Node Next { get; set; }
             }
         }
     }
