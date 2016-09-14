@@ -105,10 +105,28 @@ namespace TddDemo
         [Fact]
         public void StructsAndProperties()
         {
-            //this.MyProperty.X = 3;
+            // Dit mag niet omdat je anders een copy'tje zou aanpassen
+            // Location.X = 3;
+
+            // Dus moet het in 3 stappen
+            Point m = this.Location;
+            m.X = 3;
+            Location = m;
         }
 
-        public Point MyProperty { get; set; }
+
+        private Point _location;
+
+        // Even uitgeschreven om duidelijk te maken dat je vanuit
+        // de getter een copy'tje van het field terugkrijg en niet
+        // een referentie naar het field zelf.
+        public Point Location
+        {
+            get { return _location; }
+            set { _location = value; }
+        }
+
+        //public Point Location { get; set; }
 
         public struct Point
         {
