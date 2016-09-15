@@ -86,11 +86,7 @@ namespace TddDemo
 
             public bool MoveNext()
             {
-                if (current != null)
-                {
-                    current = current.Next;
-                }
-
+                current = current.Next;
                 return current != null;
             }
 
