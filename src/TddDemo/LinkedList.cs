@@ -6,13 +6,13 @@ using Xunit;
 
 namespace TddDemo
 {
-    class LinkedList
+    class LinkedList<T>
     {
         private Node first;
 
         public int Count { get; private set; }
 
-        public void Add(int item)
+        public void Add(T item)
         {
             if (first != null)
             {
@@ -32,7 +32,7 @@ namespace TddDemo
             Count++;
         }
 
-        public object Get(int index)
+        public T Get(int index)
         {
             var node = first;
 
@@ -47,12 +47,12 @@ namespace TddDemo
 
         private class Node
         {
-            public Node(int item)
+            public Node(T item)
             {
                 this.Item = item;
             }
 
-            public object Item { get; }
+            public T Item { get; }
             public Node Next { get; set; }
         }
     }

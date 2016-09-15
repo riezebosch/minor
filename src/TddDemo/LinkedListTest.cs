@@ -12,7 +12,7 @@ namespace TddDemo
         public void GivenEmptyListWhenAddThenCount1()
         {
             // Arrange
-            var list = new LinkedList();
+            var list = new LinkedList<int>();
 
             // Act
             list.Add(3);
@@ -25,7 +25,7 @@ namespace TddDemo
         public void GivenItemAddedItemWhenGetThenItemReturned()
         {
             // Arrange
-            var list = new LinkedList();
+            var list = new LinkedList<int>();
             list.Add(3);
 
             // Act
@@ -39,7 +39,7 @@ namespace TddDemo
         public void GivenAddedTwoItemsWhenGetLastThenSecondItemIsReturned()
         {
             // Arrange
-            var list = new LinkedList();
+            var list = new LinkedList<object>();
             list.Add(3);
             list.Add(5);
 
@@ -54,7 +54,7 @@ namespace TddDemo
         public void GivenAddedTwoItemsWhenGetFirstThenFirstItemIsReturned()
         {
             // Arrange
-            var list = new LinkedList();
+            var list = new LinkedList<int>();
             list.Add(3);
             list.Add(5);
 
