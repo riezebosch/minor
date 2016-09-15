@@ -51,7 +51,12 @@ namespace TddDemo
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new LinkedListEnumerator(first);
+            var current = first.Next;
+            while (current != null)
+            {
+                yield return current.Item;
+                current = current.Next;
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -65,35 +70,6 @@ namespace TddDemo
 
             public T Item { get; }
             public Node Next { get; set; }
-        }
-
-        class LinkedListEnumerator : IEnumerator<T>
-        {
-            Node current;
-
-            public LinkedListEnumerator(Node first)
-            {
-                current = first;
-            }
-
-            public T Current => current.Item;
-
-            object IEnumerator.Current => Current;
-
-            public void Dispose()
-            {
-            }
-
-            public bool MoveNext()
-            {
-                current = current.Next;
-                return current != null;
-            }
-
-            public void Reset()
-            {
-                throw new NotSupportedException();
-            }
         }
     }
 }

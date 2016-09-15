@@ -98,11 +98,7 @@ namespace TddDemo
         [Fact]
         public void IkZouGraagDoorMijnLijstWillenKunnenForeachen()
         {
-            var list = new LinkedList<int>();
-            list.Add(1);
-            list.Add(2);
-            list.Add(3);
-
+            var list = new LinkedList<int> { 1, 2, 3 };
             int sum = 0;
 
             foreach (var item in list)
