@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -107,6 +107,48 @@ namespace TddDemo
             }
 
             Assert.Equal(6, sum);
+        }
+
+        [Fact]
+        public void Given2ListsWhenConcatenatingThenResultContainsItemsFromLists()
+        {
+            var lista = new LinkedList<int> { 1, 2, 3 };
+            var listb = new LinkedList<int> { 7, 8, 9 };
+
+            lista.AddRange(listb);
+            Assert.True(lista.Contains(9));
+        }
+
+        [Fact]
+        public void Given2ListsWithDifferentTypesWhenConcatenatingThenResultContainsItemsFromLists()
+        {
+            var hond = new Hond { Aaibaarheid = 9 };
+            var lista = new LinkedList<Dier> { hond };
+            var listb = new LinkedList<Hond> { hond };
+
+            lista.AddRange(listb);
+            Assert.Equal(2, lista.Count);
+        }
+
+        [Fact]
+        public void Given2ListsWithDifferentValueTypesWhenConcatenatingThenResultContainsItemsFromLists()
+        {
+            var lista = new LinkedList<int> { 1 ,2 ,3 };
+            var listb = new LinkedList<double> { 7, 8, 9 };
+
+            // Dit mag dus niet omdat double niet is afgeleid van int!
+            //lista.AddRange(listb);
+        }
+
+
+        class Dier
+        {
+            public int AantalPoten { get; set; }
+        }
+
+        class Hond : Dier
+        {
+            public int Aaibaarheid { get; set; }
         }
     }
 }

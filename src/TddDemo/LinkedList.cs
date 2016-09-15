@@ -7,7 +7,7 @@ using Xunit;
 
 namespace TddDemo
 {
-    class LinkedList<T> : IEnumerable<T>
+    class LinkedList<T> : IEnumerable<T>, ILinkedList<T>
     {
         Node first, last;
 
@@ -70,6 +70,14 @@ namespace TddDemo
 
             public T Item { get; }
             public Node Next { get; set; }
+        }
+
+        public void AddRange(ILinkedList<T> list)
+        {
+            foreach (var item in list)
+            {
+                Add(item);
+            }
         }
     }
 }
