@@ -64,5 +64,35 @@ namespace TddDemo
             // Assert
             Assert.Equal(3, item);
         }
+
+        [Fact]
+        public void GivenAddedTwoItemsWhenContainsThenTrue()
+        {
+            // Arrange
+            var list = new LinkedList<int>();
+            list.Add(3);
+            list.Add(5);
+
+            // Act
+            bool contains = list.Contains(5);
+
+            // Assert
+            Assert.True(contains);
+        }
+
+        [Fact]
+        public void GivenAddedTwoItemsWhenContainsWithOTherThenFalse()
+        {
+            // Arrange
+            var list = new LinkedList<object>();
+            list.Add(3);
+            list.Add(5);
+
+            // Act
+            bool contains = list.Contains(4);
+
+            // Assert
+            Assert.False(contains);
+        }
     }
 }

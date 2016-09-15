@@ -45,6 +45,22 @@ namespace TddDemo
             return node.Item;
         }
 
+        public bool Contains(IComparable<T> item)
+        {
+            if (first != null)
+            {
+                var node = first;
+                while (node != null && item.CompareTo(node.Item) != 0)
+                {
+                    node = node.Next;
+                }
+
+                return node != null;
+            }
+
+            return false;
+        }
+
         private class Node
         {
             public Node(T item)
