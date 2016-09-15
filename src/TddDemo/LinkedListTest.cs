@@ -84,7 +84,7 @@ namespace TddDemo
         public void GivenAddedTwoItemsWhenContainsWithOTherThenFalse()
         {
             // Arrange
-            var list = new LinkedList<object>();
+            var list = new LinkedList<int>();
             list.Add(3);
             list.Add(5);
 
@@ -93,6 +93,24 @@ namespace TddDemo
 
             // Assert
             Assert.False(contains);
+        }
+
+        [Fact]
+        public void IkZouGraagDoorMijnLijstWillenKunnenForeachen()
+        {
+            var list = new LinkedList<int>();
+            list.Add(0);
+            list.Add(1);
+            list.Add(2);
+
+            int sum = 0;
+
+            foreach (var item in list)
+            {
+                sum += item;
+            }
+
+            Assert.Equal(3, sum);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,7 +7,7 @@ using Xunit;
 
 namespace TddDemo
 {
-    class LinkedList<T>
+    class LinkedList<T> : IEnumerable<T>
     {
         private Node first;
 
@@ -61,7 +62,14 @@ namespace TddDemo
             return false;
         }
 
-        private class Node
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new LinkedListEnumerator(first);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        class Node
         {
             public Node(T item)
             {
@@ -70,6 +78,40 @@ namespace TddDemo
 
             public T Item { get; }
             public Node Next { get; set; }
+        }
+
+        class LinkedListEnumerator : IEnumerator<T>
+        {
+            Node current;
+
+            public LinkedListEnumerator(Node first)
+            {
+                current = first;
+            }
+
+            public T Current => current.Item;
+
+            object IEnumerator.Current => Current;
+
+            public void Dispose()
+            {
+            }
+
+            public bool MoveNext()
+            {
+                if (current.Next != null)
+                {
+                    current = current.Next;
+                    return true;
+                }
+
+                return false;
+            }
+
+            public void Reset()
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 }
