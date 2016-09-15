@@ -99,9 +99,9 @@ namespace TddDemo
         public void IkZouGraagDoorMijnLijstWillenKunnenForeachen()
         {
             var list = new LinkedList<int>();
-            list.Add(0);
             list.Add(1);
             list.Add(2);
+            list.Add(3);
 
             int sum = 0;
 
@@ -110,7 +110,7 @@ namespace TddDemo
                 sum += item;
             }
 
-            Assert.Equal(3, sum);
+            Assert.Equal(6, sum);
         }
     }
 }

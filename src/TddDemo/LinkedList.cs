@@ -11,19 +11,16 @@ namespace TddDemo
     {
         Node first, last;
 
+        public LinkedList()
+        {
+            first = last = new Node(default(T));
+        }
+
         public int Count { get; private set; }
 
         public void Add(T item)
         {
-            if (last == null)
-            {
-                first = last = new Node(item);
-            }
-            else
-            {
-                last = last.Next = new Node(item);
-            }
-
+            last = last.Next = new Node(item);
             Count++;
         }
 
@@ -32,7 +29,7 @@ namespace TddDemo
             var node = first;
 
             // dit is een grapje van Eric Lippert!
-            while (index-- > 0)
+            while (index-- >= 0)
             {
                 node = node.Next;
             }
