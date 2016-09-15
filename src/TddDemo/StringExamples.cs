@@ -16,7 +16,8 @@ namespace TddDemo
 
             
 
-            Assert.Equal("Dit is een example van een string", input1);
+            Assert.NotEqual("Dit is een example van een string", input1);
+            Assert.Equal("Dit is een example van een string", input2);
             Assert.Equal('t', input1[2]);
 
             input1 = input1 + "hoi";
