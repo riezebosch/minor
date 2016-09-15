@@ -9,25 +9,19 @@ namespace TddDemo
 {
     class LinkedList<T> : IEnumerable<T>
     {
-        private Node first;
+        Node first, last;
 
         public int Count { get; private set; }
 
         public void Add(T item)
         {
-            if (first != null)
+            if (last == null)
             {
-                var node = first;
-                while (node.Next != null)
-                {
-                    node = node.Next;
-                }
-
-                node.Next = new Node(item);
+                first = last = new Node(item);
             }
             else
             {
-                first = new Node(item);
+                last = last.Next = new Node(item);
             }
 
             Count++;
@@ -48,17 +42,13 @@ namespace TddDemo
 
         public bool Contains(IComparable<T> item)
         {
-            if (first != null)
+            foreach (var here in this)
             {
-                var node = first;
-                while (node != null && item.CompareTo(node.Item) != 0)
+                if (item.CompareTo(here) == 0)
                 {
-                    node = node.Next;
+                    return true;
                 }
-
-                return node != null;
             }
-
             return false;
         }
 
@@ -99,13 +89,12 @@ namespace TddDemo
 
             public bool MoveNext()
             {
-                if (current.Next != null)
+                if (current != null)
                 {
                     current = current.Next;
-                    return true;
                 }
 
-                return false;
+                return current != null;
             }
 
             public void Reset()
