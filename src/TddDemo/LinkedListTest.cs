@@ -149,13 +149,14 @@ namespace TddDemo
             VulLijstMetHonden(lista);
             VulLijstMetHonden(listb);
 
-            Assert.Equal(1, lista.Count);
-            Assert.Equal(1, listb.Count);
+            Assert.Equal(2, lista.Count);
+            Assert.Equal(2, listb.Count);
         }
 
-        void VulLijstMetHonden(LinkedList<Hond> list)
+        void VulLijstMetHonden(IAdd<Hond> list)
         {
             list.Add(new Hond { Aaibaarheid = 9 });
+            list.Add(new Hond { Aaibaarheid = 12 });
         }
 
         class Dier
