@@ -140,6 +140,23 @@ namespace TddDemo
             //lista.AddRange(listb);
         }
 
+        [Fact]
+        public void ContraVarianceMetTestVulMethode()
+        {
+            var lista = new LinkedList<Dier>();
+            var listb = new LinkedList<Hond>();
+
+            VulLijstMetHonden(lista);
+            VulLijstMetHonden(listb);
+
+            Assert.Equal(1, lista.Count);
+            Assert.Equal(1, listb.Count);
+        }
+
+        void VulLijstMetHonden(LinkedList<Hond> list)
+        {
+            list.Add(new Hond { Aaibaarheid = 9 });
+        }
 
         class Dier
         {

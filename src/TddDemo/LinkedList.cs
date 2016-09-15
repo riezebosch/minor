@@ -7,7 +7,7 @@ using Xunit;
 
 namespace TddDemo
 {
-    class LinkedList<T> : IEnumerable<T>, ILinkedList<T>
+    class LinkedList<T> : IEnumerable<T>, ILinkedList<T>, IAdd<T>
     {
         Node first, last;
 
