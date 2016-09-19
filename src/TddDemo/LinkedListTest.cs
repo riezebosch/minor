@@ -96,6 +96,24 @@ namespace TddDemo
         }
 
         [Fact]
+        public void ContainsMetStringsMaarDanOpPartialMatch()
+        {
+            // Arrange
+            var list = new LinkedList<string>
+            {
+                "asdf asdfj;klasdf jlsdf",
+                "qewrupq uiower uiower"
+            };
+            var comparer = new CustomStringComparer("asdfj;");
+
+            // Act
+            bool contains = list.Contains(comparer);
+
+            // Assert
+            Assert.True(contains);
+        }
+
+        [Fact]
         public void IkZouGraagDoorMijnLijstWillenKunnenForeachen()
         {
             var list = new LinkedList<int> { 1, 2, 3 };
@@ -167,6 +185,21 @@ namespace TddDemo
         class Hond : Dier
         {
             public int Aaibaarheid { get; set; }
+        }
+
+        private class CustomStringComparer : IComparable<string>
+        {
+            private string v;
+
+            public CustomStringComparer(string v)
+            {
+                this.v = v;
+            }
+
+            public int CompareTo(string other)
+            {
+                return other.Contains(v) ? 0 : 1;
+            }
         }
     }
 }
