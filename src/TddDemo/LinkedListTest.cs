@@ -137,10 +137,7 @@ namespace TddDemo
             Assert.True(contains);
         }
 
-        private bool Equals(string x, string y)
-        {
-            return x.Contains(y);
-        }
+        private bool Equals(string x, string y) => x.Contains(y);
 
         [Fact]
         public void IkZouGraagDoorMijnLijstWillenKunnenForeachen()
