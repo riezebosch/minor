@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace TddDemo
@@ -104,10 +102,16 @@ namespace TddDemo
                 "asdf asdfj;klasdf jlsdf",
                 "qewrupq uiower uiower"
             };
-            var comparer = new CustomStringComparer("asdfj;");
 
+            /* Gebruik één van deze twee interfaces (of allebei):
+             *  IComparer<string>
+             *  IEqualityComparer<string> 
+             */
+            IEqualityComparer<string> comparer = 
+                new CustomStringComparer();
+            
             // Act
-            bool contains = list.Contains(comparer);
+            bool contains = list.Contains("asdfj;", comparer);
 
             // Assert
             Assert.True(contains);
@@ -187,18 +191,16 @@ namespace TddDemo
             public int Aaibaarheid { get; set; }
         }
 
-        private class CustomStringComparer : IComparable<string>
+        private class CustomStringComparer : IEqualityComparer<string>
         {
-            private string v;
-
-            public CustomStringComparer(string v)
+            public bool Equals(string x, string y)
             {
-                this.v = v;
+                return x.Contains(y);
             }
 
-            public int CompareTo(string other)
+            public int GetHashCode(string obj)
             {
-                return other.Contains(v) ? 0 : 1;
+                throw new NotImplementedException();
             }
         }
     }

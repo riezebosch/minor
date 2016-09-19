@@ -79,5 +79,18 @@ namespace TddDemo
                 Add(item);
             }
         }
+
+        public bool Contains(T item, IEqualityComparer<T> comparer)
+        {
+            foreach (var element in this)
+            {
+                if (comparer.Equals(element, item))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
