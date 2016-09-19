@@ -128,9 +128,9 @@ namespace TddDemo
                 "asdf asdfj;klasdf jlsdf",
                 "qewrupq uiower uiower"
             };
-
+            
             // Act
-            var method = new Equals<string>(ContainsMySpecificSubstring);
+            Func<string, bool> method = ContainsMySpecificSubstring;
             bool contains = list.Contains(method);
 
             // Assert
@@ -139,6 +139,21 @@ namespace TddDemo
 
         private bool ContainsMySpecificSubstring(string x) => x.Contains("asdfj;");
 
+        public void ContainsMetStringsMaarDanMetLambda()
+        {
+            // Arrange
+            var list = new LinkedList<string>
+            {
+                "asdf asdfj;klasdf jlsdf",
+                "qewrupq uiower uiower"
+            };
+
+            // Act
+            bool contains = list.Contains(x => x.Contains("asdfj;"));
+
+            // Assert
+            Assert.True(contains);
+        }
         [Fact]
         public void IkZouGraagDoorMijnLijstWillenKunnenForeachen()
         {

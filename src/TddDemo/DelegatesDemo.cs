@@ -14,14 +14,55 @@ namespace TddDemo
         [Fact]
         public void WatKanJeEigenlijkPreciesMetEenDelegate()
         {
-            NaamVanDeDelegate method = new NaamVanDeDelegate(DemoMethode);
-            method(4);
+            NaamVanDeDelegate method1 = new NaamVanDeDelegate(DemoMethode);
+            var method2 = new NaamVanDeDelegate(DemoMethode);
+            //var method3 = DemoMethode;
+            NaamVanDeDelegate method4 = DemoMethode;
+
+            method1(4);
+            method1.Invoke(4);
         }
 
         private static void DemoMethode(int i)
         {
         }
+
+        [Fact]
+        public void KunnenGenericsGecombineerdWordenMetDelegates()
+        {
+            NaamVanDeDelegate<bool> method = DemoMethode;
+          
+        }
+
+        delegate void NaamVanDeDelegate<T>(T arg);
+        delegate void NaamVanDeDelegate<T1, T2>(T1 arg1, T2 arg2);
+        delegate void NaamVanDeDelegate<T1, T2, T3>(T1 arg1, T2 arg2, T3 arg);
+
+        delegate TResult NaamVanDeDelegateMetReturnType<TResult>();
+        delegate TResult NaamVanDeDelegateMetReturnType<T, TResult>(T arg);
+        delegate TResult NaamVanDeDelegateMetReturnType<T1, T2, TResult>(T1 arg1, T2 arg2);
+
+        private static void DemoMethode(bool b)
+        {
+        }
+
+        [Fact]
+        public void WatNouAlsIkMoeiteHebMetKleineMethodesEnDommeNamen()
+        {
+            Func<int, bool> method1 = IsGetalDeelbaarDoorTwee;
+            Func<int, bool> method2 = delegate (int i) { return i % 2 == 0; };
+
+            Func<int, bool> method3 = (int i) => { return i % 2 == 0; };
+            Func<int, bool> method4 = i => i % 2 == 0;
+        }
+
+        private static bool IsGetalDeelbaarDoorTwee(int i)
+        {
+            return i % 2 == 0;
+        }
     }
 
 
 }
+
+
