@@ -117,6 +117,31 @@ namespace TddDemo
             Assert.True(contains);
         }
 
+        
+
+        [Fact]
+        public void ContainsMetStringsMaarDanMetDelegates()
+        {
+            // Arrange
+            var list = new LinkedList<string>
+            {
+                "asdf asdfj;klasdf jlsdf",
+                "qewrupq uiower uiower"
+            };
+
+            // Act
+            var method = new Equals<string>(Equals);
+            bool contains = list.Contains("asdfj;", method);
+
+            // Assert
+            Assert.True(contains);
+        }
+
+        private bool Equals(string x, string y)
+        {
+            return x.Contains(y);
+        }
+
         [Fact]
         public void IkZouGraagDoorMijnLijstWillenKunnenForeachen()
         {
