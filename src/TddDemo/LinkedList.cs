@@ -7,7 +7,7 @@ using Xunit;
 
 namespace TddDemo
 {
-    delegate bool Equals<T>(T x, T y);
+    delegate bool Equals<T>(T x);
 
     class LinkedList<T> : IEnumerable<T>, ILinkedList<T>, IAdd<T>
     {
@@ -95,11 +95,11 @@ namespace TddDemo
             return false;
         }
 
-        public bool Contains(T input, Equals<T> method)
+        public bool Contains(Equals<T> method)
         {
             foreach (var item in this)
             {
-                if (method(item, input))
+                if (method(item))
                 {
                     return true;
                 }

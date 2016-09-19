@@ -130,14 +130,14 @@ namespace TddDemo
             };
 
             // Act
-            var method = new Equals<string>(Equals);
-            bool contains = list.Contains("asdfj;", method);
+            var method = new Equals<string>(ContainsMySpecificSubstring);
+            bool contains = list.Contains(method);
 
             // Assert
             Assert.True(contains);
         }
 
-        private bool Equals(string x, string y) => x.Contains(y);
+        private bool ContainsMySpecificSubstring(string x) => x.Contains("asdfj;");
 
         [Fact]
         public void IkZouGraagDoorMijnLijstWillenKunnenForeachen()
