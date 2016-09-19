@@ -60,6 +60,15 @@ namespace TddDemo
         {
             return i % 2 == 0;
         }
+
+        [Fact]
+        public void ContraVarianceMetDelegates()
+        {
+            Func<object, bool> method5 = i => true;
+            Func<string, bool> method6 = method5;
+            method5(12);
+            method6("12");
+        }
     }
 
 
