@@ -123,5 +123,49 @@ namespace TddDemo
 
             public int PropertyFromDerived { get; }
         }
+
+        [Fact]
+        public void HoeGaIkOmMetTweeInterfacesMetDezelfdeMethodeSignatuur()
+        {
+            var item = new MultipleInterfaces();
+            item.A();
+            item.A(10);
+
+            item.B();
+            int result = ((I2)item).B();
+            Assert.Equal(10, result);
+        }
+
+        interface I1
+        {
+            void A();
+            void B();
+        }
+
+        interface I2
+        {
+            void A(int input);
+            int B();
+        }
+
+        class MultipleInterfaces : I1, I2
+        {
+            public void A()
+            {
+            }
+
+            public void A(int input)
+            {
+            }
+
+            public void B()
+            {
+            }
+
+            int I2.B()
+            {
+                return 10;
+            }
+        }
     }
 }
