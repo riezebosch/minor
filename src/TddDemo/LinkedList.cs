@@ -105,5 +105,16 @@ namespace TddDemo
 
             return false;
         }
+
+        public IEnumerable<T> Matching(Func<T, bool> pred)
+        {
+            foreach (var item in this)
+            {
+                if (pred(item))
+                {
+                    yield return item;
+                }
+            }
+        }
     }
 }

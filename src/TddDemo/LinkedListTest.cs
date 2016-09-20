@@ -212,6 +212,30 @@ namespace TddDemo
             Assert.Equal(2, listb.Count);
         }
 
+        [Fact]
+        public void GivenListWithTwoItemsWhenBothMatchingThanEverythingReturned()
+        {
+            var list = new LinkedList<string>
+            {
+                "abc", "def"
+            };
+
+            var result = list.Matching(x => true);
+            Assert.Equal(list, result);
+        }
+
+        [Fact]
+        public void GivenListWithTwoItemsWhenOneMatchingThanSingleReturned()
+        {
+            var list = new LinkedList<string>
+            {
+                "abc", "def"
+            };
+
+            var result = list.Matching(x => x == "abc");
+            Assert.Equal(new[] { "abc" }, result);
+        }
+
         void VulLijstMetHonden(IAdd<Hond> list)
         {
             list.Add(new Hond { Aaibaarheid = 9 });
