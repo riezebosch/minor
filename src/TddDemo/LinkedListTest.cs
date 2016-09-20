@@ -236,6 +236,15 @@ namespace TddDemo
             Assert.Equal(new[] { "abc" }, result);
         }
 
+        [Fact]  
+        public void GivenAnArrayOfItemsWhenToLinkedListThenAllItemsAreInALinkedList()
+        {
+            int[] items = { 1, 2, 3, 4 };
+            LinkedList<int> result = items.ToLinkedList();
+
+            Assert.Equal(items, result);
+        }
+
         void VulLijstMetHonden(IAdd<Hond> list)
         {
             list.Add(new Hond { Aaibaarheid = 9 });
