@@ -37,7 +37,23 @@ namespace TddDemo
             return node.Item;
         }
 
-        public T this[int index] => Get(index);
+        public T this[int index]
+        {
+            get
+            {
+                return Get(index);
+            }
+            set
+            {
+                var node = first;
+                for (int i = 0; i <= index; i++)
+                {
+                    node = node.Next;
+                }
+
+                node.Item = value;
+            }
+        }
 
         public bool Contains(IComparable<T> item)
         {
@@ -70,7 +86,7 @@ namespace TddDemo
                 this.Item = item;
             }
 
-            public T Item { get; }
+            public T Item { get; set; }
             public Node Next { get; set; }
         }
 

@@ -249,6 +249,9 @@ namespace TddDemo
         public void OperatorOverloading()
         {
             var list = new LinkedList<int> { 1, 2, 3, 4 };
+
+            // LET OP: Dit is eigenlijk precies hetzelfde als: 
+            // list = list + 5;
             list += 5;
 
             Assert.True(list.Contains(5));
@@ -281,7 +284,18 @@ namespace TddDemo
         public void IndexerOpLinkedList()
         {
             var list = new LinkedList<int> { 1, 2, 3, 4 };
-            Assert.Equal(3, list[2]);
+            var result = list[2];
+
+            Assert.Equal(3, result);
+        }
+
+        [Fact]
+        public void IndexerSetterOpLinkedList()
+        {
+            var list = new LinkedList<int> { 1, 2, 3, 4 };
+            list[2] = 100;
+
+            Assert.Equal(new[] { 1,2,100, 4}, list);
         }
 
         void VulLijstMetHonden(IAdd<Hond> list)
