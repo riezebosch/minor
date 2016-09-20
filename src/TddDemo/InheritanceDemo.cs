@@ -167,5 +167,31 @@ namespace TddDemo
                 return 10;
             }
         }
+
+        [Fact]
+        public void WanneerEenIsEnWanneerEenAs()
+        {
+            Assert.Throws<ArgumentException>(() => Iets(null));
+
+            Assert.Equal(12, Iets("12"));
+            string s = null;
+            Assert.Throws<ArgumentException>(() => Iets(s));
+        }
+
+        static int Iets(object o)
+        {
+            int? i = o as int?;
+            if (i != null)
+            {
+                return i.Value * 2;
+            }
+
+            if (o is string)
+            {
+                return int.Parse((string)o);
+            }
+
+            throw new ArgumentException("o");
+        }
     }
 }
