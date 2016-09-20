@@ -89,5 +89,39 @@ namespace TddDemo
                 return "Deze zit in D en mag verder niet meer overridden worden!";
             }
         }
+
+        [Fact]
+        public void HoeWerkenConstructorsMetDerivedClasses()
+        {
+            var b = new Base(21);
+            Assert.Equal(21, b.PropertyFromBase);
+
+            var d = new Derived();
+            Assert.Equal(1234, d.PropertyFromDerived);
+            Assert.Equal(21, d.PropertyFromBase);
+
+            //  Dit kan natuurlijk niet, want de constructors
+            //  van de base zijn niet beschikbaar op derived
+            // new Derived(21)
+        }
+
+        class Base
+        {
+            public int PropertyFromBase { get; }
+            public Base(int value)
+            {
+                PropertyFromBase = value;
+            }
+        }
+
+        class Derived : Base
+        {
+            public Derived() : base(21)
+            {
+                PropertyFromDerived = 1234;
+            }
+
+            public int PropertyFromDerived { get; }
+        }
     }
 }
