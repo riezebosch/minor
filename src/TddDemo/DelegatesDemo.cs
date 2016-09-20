@@ -69,6 +69,32 @@ namespace TddDemo
             method5(12);
             method6("12");
         }
+
+        int counter = 0;
+
+        [Fact]
+        public void HoeWerkenMulticastDelegates()
+        {
+           
+            Action a = () => counter++;
+            a += () => counter += 2;
+            a += delegate () { counter += 10; };
+            a += HoogDeCounterOp;
+
+            a();
+            Assert.Equal(43, counter);
+
+            // Blijkbaar kan je zo een specifieke methode uitvoeren
+            // uit het lijstje met gekoppelde methodes :)
+            counter = 0;
+            a.GetInvocationList()[1].DynamicInvoke();
+            Assert.Equal(2, counter);
+        }
+
+        private void HoogDeCounterOp()
+        {
+            this.counter += 30;
+        }
     }
 
 
