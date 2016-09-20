@@ -37,6 +37,8 @@ namespace TddDemo
             return node.Item;
         }
 
+        public T this[int index] => Get(index);
+
         public bool Contains(IComparable<T> item)
         {
             foreach (var here in this)
@@ -115,6 +117,22 @@ namespace TddDemo
                     yield return item;
                 }
             }
+        }
+
+        public static LinkedList<T> operator +(LinkedList<T> list, T item)
+        {
+            var result = list.ToLinkedList();
+            result.Add(item);
+
+            return result;
+        }
+
+        public static LinkedList<T> operator +(LinkedList<T> lista, LinkedList<T> listb)
+        {
+            var result = lista.ToLinkedList();
+            result.AddRange(listb);
+
+            return result;
         }
     }
 }

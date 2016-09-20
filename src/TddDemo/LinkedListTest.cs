@@ -107,9 +107,9 @@ namespace TddDemo
              *  IComparer<string>
              *  IEqualityComparer<string> 
              */
-            IEqualityComparer<string> comparer = 
+            IEqualityComparer<string> comparer =
                 new CustomStringComparer();
-            
+
             // Act
             bool contains = list.Contains("asdfj;", comparer);
 
@@ -117,7 +117,7 @@ namespace TddDemo
             Assert.True(contains);
         }
 
-        
+
 
         [Fact]
         public void ContainsMetStringsMaarDanMetDelegates()
@@ -128,7 +128,7 @@ namespace TddDemo
                 "asdf asdfj;klasdf jlsdf",
                 "qewrupq uiower uiower"
             };
-            
+
             // Act
             Func<string, bool> method = ContainsMySpecificSubstring;
             bool contains = list.Contains(method);
@@ -192,7 +192,7 @@ namespace TddDemo
         [Fact]
         public void Given2ListsWithDifferentValueTypesWhenConcatenatingThenResultContainsItemsFromLists()
         {
-            var lista = new LinkedList<int> { 1 ,2 ,3 };
+            var lista = new LinkedList<int> { 1, 2, 3 };
             var listb = new LinkedList<double> { 7, 8, 9 };
 
             // Dit mag dus niet omdat double niet is afgeleid van int!
@@ -236,13 +236,52 @@ namespace TddDemo
             Assert.Equal(new[] { "abc" }, result);
         }
 
-        [Fact]  
+        [Fact]
         public void GivenAnArrayOfItemsWhenToLinkedListThenAllItemsAreInALinkedList()
         {
             int[] items = { 1, 2, 3, 4 };
             LinkedList<int> result = items.ToLinkedList();
 
             Assert.Equal(items, result);
+        }
+
+        [Fact]
+        public void OperatorOverloading()
+        {
+            var list = new LinkedList<int> { 1, 2, 3, 4 };
+            list += 5;
+
+            Assert.True(list.Contains(5));
+        }
+
+        [Fact]
+        public void OperatorOverloadingNewInstanceShouldReturn()
+        {
+            var original = new LinkedList<int> { 1, 2, 3, 4 };
+            var result = original + 5;
+
+            Assert.Equal(new[] { 1, 2, 3, 4, 5 }, result);
+            Assert.Equal(new[] { 1, 2, 3, 4 }, original);
+        }
+
+        [Fact]
+        public void OperatorOverloadingWithTwoLinkedLists()
+        {
+            var lista = new LinkedList<int> { 1, 2, 3, 4 };
+            var listb = new LinkedList<int> { 5, 6 };
+
+            var result = lista + listb;
+
+            Assert.Equal(new[] { 1, 2, 3, 4 }, lista);
+            Assert.Equal(new[] { 5, 6 }, listb);
+            Assert.Equal(new[] { 1, 2, 3, 4, 5, 6 }, result);
+        }
+
+        [Fact]
+        public void IndexerOpLinkedList()
+        {
+            var list = new LinkedList<int> { 1, 2, 3, 4 };
+            Assert.Equal(3, list[2]);
         }
 
         void VulLijstMetHonden(IAdd<Hond> list)
