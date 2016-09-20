@@ -81,5 +81,13 @@ namespace TddDemo
 
             Assert.Equal("Deze methode zit op class A", result);
         }
+
+        class D : A
+        {
+            public sealed override string Method()
+            {
+                return "Deze zit in D en mag verder niet meer overridden worden!";
+            }
+        }
     }
 }
