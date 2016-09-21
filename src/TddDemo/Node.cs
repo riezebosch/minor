@@ -36,5 +36,20 @@ namespace TddDemo
         {
             return node.Item;
         }
+
+        public static bool operator true(Node<T> node)
+        {
+            return node != null;
+        }
+
+        public static bool operator false(Node<T> node)
+        {
+            return !node;
+        }
+
+        public static bool operator !(Node<T> node)
+        {
+            return node == null;
+        }
     }
 }

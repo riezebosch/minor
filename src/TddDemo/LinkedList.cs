@@ -20,7 +20,7 @@ namespace TddDemo
 
         public void Add(T item)
         {
-            last = last += item;
+            last += item;
             Count++;
         }
 
@@ -67,11 +67,10 @@ namespace TddDemo
 
         public IEnumerator<T> GetEnumerator()
         {
-            var current = first.Next;
-            while (current != null)
+            var current = first;
+            while (++current)
             {
                 yield return current;
-                current++;
             }
         }
 

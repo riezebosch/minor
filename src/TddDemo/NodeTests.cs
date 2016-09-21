@@ -45,5 +45,33 @@ namespace TddDemo
 
             Assert.Equal(2, value);
         }
+
+        [Fact]
+        public void BoolOperatorOnNodeWhenNull()
+        {
+            Node<int> node = null;
+            var result = node ? true : false;
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void BoolOperatorOnNodeWhenNotNull()
+        {
+            var node = new Node<int>(3);
+            var result = node ? true : false;
+
+            Assert.True(result);
+        }
+
+        //[Fact]
+        //public void BoolFalseOperatorOnNode()
+        //{
+        //    var nodea = new Node<int>(3);
+        //    var nodeb = new Node<int>(3);
+        //    var result = nodeb || true ? true : false;
+
+        //    Assert.True(result);
+        //}
     }
 }
