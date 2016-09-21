@@ -9,32 +9,30 @@ namespace TddDemo
 {
     class LinkedList<T> : IEnumerable<T>, ILinkedList<T>, IAdd<T>
     {
-        Node first, last;
+        Node<T> first, last;
 
         public LinkedList()
         {
-            first = last = new Node(default(T));
+            first = last = default(T);
         }
 
         public int Count { get; private set; }
 
         public void Add(T item)
         {
-            last = last.Next = new Node(item);
+            last = last += item;
             Count++;
         }
 
         public T Get(int index)
         {
             var node = first;
-
-            // dit is een grapje van Eric Lippert!
             while (index-- >= 0)
             {
-                node = node.Next;
+                node++;
             }
 
-            return node.Item;
+            return node;
         }
 
         public T this[int index]
@@ -48,7 +46,7 @@ namespace TddDemo
                 var node = first;
                 for (int i = 0; i <= index; i++)
                 {
-                    node = node.Next;
+                    node++;
                 }
 
                 node.Item = value;
@@ -72,23 +70,12 @@ namespace TddDemo
             var current = first.Next;
             while (current != null)
             {
-                yield return current.Item;
-                current = current.Next;
+                yield return current;
+                current++;
             }
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        class Node
-        {
-            public Node(T item)
-            {
-                this.Item = item;
-            }
-
-            public T Item { get; set; }
-            public Node Next { get; set; }
-        }
 
         public void AddRange(ILinkedList<T> list)
         {
