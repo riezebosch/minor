@@ -26,6 +26,11 @@ namespace TddDemo
 
         public T Get(int index)
         {
+            return GetNode(index);
+        }
+
+        private Node<T> GetNode(int index)
+        {
             var node = first;
             while (index-- >= 0)
             {
@@ -43,27 +48,11 @@ namespace TddDemo
             }
             set
             {
-                var node = first;
-                for (int i = 0; i <= index; i++)
-                {
-                    node++;
-                }
-
-                node.Item = value;
+                GetNode(index).Item = value;
             }
         }
 
-        public bool Contains(IComparable<T> item)
-        {
-            foreach (var here in this)
-            {
-                if (item.CompareTo(here) == 0)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        public bool Contains(IComparable<T> item) => Contains(x => item.CompareTo(x) == 0);
 
         public IEnumerator<T> GetEnumerator()
         {
@@ -84,27 +73,13 @@ namespace TddDemo
             }
         }
 
-        public bool Contains(T item, IEqualityComparer<T> comparer)
-        {
-            foreach (var element in this)
-            {
-                if (comparer.Equals(element, item))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        public bool Contains(T item, IEqualityComparer<T> comparer) => Contains(x => comparer.Equals(x, item));
 
         public bool Contains(Func<T, bool> method)
         {
-            foreach (var item in this)
+            foreach (var item in Matching(method))
             {
-                if (method(item))
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;
