@@ -16,6 +16,13 @@ namespace TddDemo
             first = last = default(T);
         }
 
+        public void Remove(int index)
+        {
+            var prev = GetNode(index - 1);
+            prev += prev.Next.Next;
+            Count--;
+        }
+
         public int Count { get; private set; }
 
         public void Add(T item)
