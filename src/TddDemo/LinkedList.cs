@@ -118,5 +118,15 @@ namespace TddDemo
 
             return result;
         }
+
+        public void Insert(int index, T item)
+        {
+            var node = GetNode(index - 1);
+            var next = node.Next;
+            node += item;
+            node += next;
+
+            Count++;
+        }
     }
 }

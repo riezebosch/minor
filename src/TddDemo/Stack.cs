@@ -8,13 +8,13 @@ namespace TddDemo
 
         public void Put(T item)
         {
-            items.Add(item);
+            items.Insert(0, item);
         }
 
         public T Pop()
         {
-            T result = items[items.Count - 1];
-            items.Remove(items.Count - 1);
+            T result = items[0];
+            items.Remove(0);
             return result;
         }
 

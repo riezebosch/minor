@@ -298,6 +298,33 @@ namespace TddDemo
             Assert.Equal(new[] { 1,2,100, 4}, list);
         }
 
+        [Fact]
+        public void InsertOpList()
+        {
+            var list = new LinkedList<int> { 1, 2, 3 };
+            list.Insert(0, 500);
+
+            Assert.Equal(new [] { 500, 1, 2, 3 }, list);
+        }
+
+        [Fact]
+        public void InsertOpListCountOpgehoogd()
+        {
+            var list = new LinkedList<int>();
+            list.Insert(0, 2);
+
+            Assert.Equal(1, list.Count);
+        }
+
+        [Fact]
+        public void RemoveLastNode()
+        {
+            var list = new LinkedList<int> { 1 };
+            list.Remove(0);
+
+            Assert.Equal(new int[] { }, list);
+        }
+
         void VulLijstMetHonden(IAdd<Hond> list)
         {
             list.Add(new Hond { Aaibaarheid = 9 });
