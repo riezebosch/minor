@@ -325,6 +325,16 @@ namespace TddDemo
             Assert.Equal(new int[] { }, list);
         }
 
+        [Fact]
+        public void GedraagtMijnLinkedListZichNetZoAlsDieVanDotNet()
+        {
+            var ours = new LinkedList<int> { 1, 2, 3, 4 };
+            var theirs = new System.Collections.Generic.LinkedList<int>();
+            theirs.AddAfter(theirs.AddAfter(theirs.AddAfter(theirs.AddFirst(1), 2), 3), 4);
+
+            Assert.Equal(theirs, ours);
+        }
+
         void VulLijstMetHonden(IAdd<Hond> list)
         {
             list.Add(new Hond { Aaibaarheid = 9 });
