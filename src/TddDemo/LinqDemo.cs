@@ -225,6 +225,33 @@ namespace TddDemo
                               orderby p.Name, p.Age
                               select p;
         }
+
+        [Fact]
+        public void ToLookupEnGroupBy()
+        {
+            var maarten = new Person { Name = "Maarten", Age = 17 };
+            var pieter25 = new Person { Name = "Pieter", Age = 25 };
+            var pieter18 = new Person { Name = "Pieter", Age = 18 };
+            var chantal = new Person { Name = "Chantal", Age = 25 };
+
+            var personen = new List<Person>
+            {
+                maarten,
+                pieter25,
+                pieter18,
+                chantal
+            };
+
+            var groupby = personen.GroupBy(p => p.Age);
+            var lookup = personen.ToLookup(p => p.Age);
+
+
+            // lookup om snel op basis van key te selecteren
+            Assert.Equal(new[] { pieter18 }, lookup[18]);
+
+            // groupby om verder te query'en
+            Assert.Equal(17, groupby.OrderBy(p => p.Key).First().Key);
+        }
     }
 
     internal class Hond : Dier
