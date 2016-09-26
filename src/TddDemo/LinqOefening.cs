@@ -40,8 +40,8 @@ namespace TddDemo
              * (Met één LINQ-query wordt hier een aaneengesloten reeks van extension methods / query operators bedoeld.)
              */
 
-            var query = plaatsnamen;
-            //Assert.Equal(??, query);
+            var query = plaatsnamen.Where(p => p.EndsWith("m")).Sum(p => p.Length);
+            Assert.Equal(15, query);
         }
 
         [Fact]
