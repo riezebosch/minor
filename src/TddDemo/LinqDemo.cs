@@ -203,6 +203,28 @@ namespace TddDemo
 
             Assert.Throws<InvalidCastException>(() => items.Cast<Person>().ToList());
         }
+
+        [Fact]
+        public void OrderByEnThenBy()
+        {
+            var maarten = new Person { Name = "Maarten", Age = 17 };
+            var pieter25 = new Person { Name = "Pieter", Age = 25 };
+            var pieter18 = new Person { Name = "Pieter", Age = 18 };
+
+            var personen = new List<Person>
+            {
+                maarten,
+                pieter25,
+                pieter18
+            };
+
+            var query = personen.OrderBy(p => p.Name).ThenBy(p => p.Age);
+            Assert.Equal(new[] { maarten, pieter18, pieter25 }, query);
+
+            var querysyntax = from p in personen
+                              orderby p.Name, p.Age
+                              select p;
+        }
     }
 
     internal class Hond : Dier
