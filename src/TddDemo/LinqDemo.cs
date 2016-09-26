@@ -60,6 +60,7 @@ namespace TddDemo
         private class Person
         {
             public int Age { get; internal set; }
+            public List<Dier> Huisdieren { get; internal set; }
             public string Name { get; internal set; }
         }
 
@@ -131,5 +132,68 @@ namespace TddDemo
 
             Assert.Equal(new[] { false, true }, query);
         }
+
+        [Fact]
+        public void SelectVsSelectMany()
+        {
+            var personen = new List<Person>
+            {
+                new Person
+                {
+                    Name = "Maarten",
+                    Age = 36,
+                    Huisdieren = new List<Dier>
+                    {
+                        new Dier { Naam = "Flappie" }
+                    }
+                },
+                new Person
+                {
+                    Name = "piet",
+                    Age = 25,
+                    Huisdieren = new List<Dier>
+                    {
+                        new Dier { Naam = "Nemo" },
+                        new Dier { Naam = "Bluppie" }
+                    }
+                }
+            };
+
+            var dieren = personen
+                .SelectMany(p => p.Huisdieren, 
+                    (p, d) => d.Naam);
+
+            var querysyntax = from p in personen
+                              from d in p.Huisdieren
+                              select d.Naam;
+
+            Assert.Equal(new[] { "Flappie", "Nemo", "Bluppie" }, dieren);
+
+
+            int[] numbers = { 1, 2, 3 };
+            char[] characters = { 'A', 'B', 'C' };
+
+            var cartesianproduct = from n in numbers
+                                   from c in characters
+                                   select $"({n},{c})";
+
+            Assert.Equal(new[]
+            {
+                "(1,A)",
+                "(1,B)",
+                "(1,C)",
+                "(2,A)",
+                "(2,B)",
+                "(2,C)",
+                "(3,A)",
+                "(3,B)",
+                "(3,C)"
+            }, cartesianproduct);
+        }
+    }
+
+    internal class Dier
+    {
+        public string Naam { get; internal set; }
     }
 }
