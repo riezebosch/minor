@@ -252,6 +252,16 @@ namespace TddDemo
             // groupby om verder te query'en
             Assert.Equal(17, groupby.OrderBy(p => p.Key).First().Key);
         }
+
+        [Fact]
+        public void WatBetekentEigenlijkDefaul()
+        {
+            var dier = default(Hond);
+            Assert.Null(dier);
+
+            var getal = default(int);
+            Assert.Equal(0, getal);
+        }
     }
 
     internal class Hond : Dier
