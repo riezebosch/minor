@@ -104,5 +104,32 @@ namespace TddDemo
             Assert.Equal(query, hardcore);
         }
 
+
+        [Fact]
+        public void WatLevertDezeQueryOp()
+        {
+            var personen = new List<Person>
+            {
+                new Person
+                {
+                    Name = "Maarten",
+                    Age = 36
+                },
+                new Person
+                {
+                    Name = "piet",
+                    Age = 25
+                }
+            };
+
+            var querysyntax = from p in personen
+                              //where ...
+                              select p.Name == "piet";
+
+            var query = personen
+                .Select(p => p.Name == "piet");
+
+            Assert.Equal(new[] { false, true }, query);
+        }
     }
 }
