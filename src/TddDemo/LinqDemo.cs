@@ -190,6 +190,23 @@ namespace TddDemo
                 "(3,C)"
             }, cartesianproduct);
         }
+
+        [Fact]
+        public void VerschilTussenCastEnOfType()
+        {
+            object[] items = { new Person { }, new Dier { }, "woord", 3 , new Hond { } };
+            var people = items.OfType<Person>();
+            Assert.Equal(1, people.Count());
+
+            var animals = items.OfType<Dier>();
+            Assert.Equal(2, animals.Count());
+
+            Assert.Throws<InvalidCastException>(() => items.Cast<Person>().ToList());
+        }
+    }
+
+    internal class Hond : Dier
+    {
     }
 
     internal class Dier
