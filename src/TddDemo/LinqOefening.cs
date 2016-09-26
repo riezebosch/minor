@@ -24,7 +24,7 @@ namespace TddDemo
              */
 
             var query = plaatsnamen;
-            //Assert.Equal(new[] { 'n' }, query);
+            Assert.Equal(new[] { "Assen", "Alphen", "Arnhem" }, query);
         }
 
         [Fact]
