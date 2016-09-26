@@ -23,7 +23,10 @@ namespace TddDemo
              * bij gelijke lengte alfabetisch, oplevert.
              */
 
-            var query = plaatsnamen;
+            var query = from p in plaatsnamen
+                        where p.Length < 8
+                        orderby p.Length, p
+                        select p;
             Assert.Equal(new[] { "Assen", "Alphen", "Arnhem" }, query);
         }
 
