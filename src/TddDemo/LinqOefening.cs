@@ -11,7 +11,7 @@ namespace TddDemo
         IEnumerable<string> plaatsnamen = new List<string>
         {
             "Amsterdam", "Arnhem", "Amersfoort",
-            "Assen", "Amstelveen", "Alphen"
+            "Assen", "Amstelveen", "Alphen", "Zaandam"
         };
 
         [Fact]
@@ -52,11 +52,21 @@ namespace TddDemo
              * van de plaatsnamen. Het antwoord is een lijstje dat bestaat uit één element 
              * als er precies één eindletter het vaakst voorkomt, en bestaat uit meerdere 
              * letters als er meerdere eindletters een eerste plaats delen. 
-             * Je oplossing mag bestaan uit meerdere queries en/of LINQ-expressies.
+             * Je oplossing mag bestaan 
+             * uit meerdere queries en/of LINQ-expressies.
              */
 
-            var query = plaatsnamen;
-            //Assert.Equal(??, query);
+            var query = (from p in plaatsnamen
+                         group p by p.Last() into g
+                         group g.Key by g.Count() into g
+                         orderby g.Key descending
+                         select g).First();
+
+            var anders = plaatsnamen.GroupBy(p => p.Last()).GroupBy(p => p.Count(), p => p.Key).OrderByDescending(p => p.Key).First();
+
+            Assert.Equal(3, query.Key);
+            Assert.Equal(new[] { 'm', 'n' }, query);
+            Assert.Equal(query, anders);
         }
     }
 }
