@@ -264,6 +264,35 @@ namespace TddDemo
         }
 
         [Fact]
+        public void HetBijzondereVanAnonymousTypes()
+        {
+            var a = new { Naam = "Pieter", Leeftijd = 45 };
+            var b = a;
+            var c = new { Naam = "Pieter", Leeftijd = 45 };
+            var d = new { Naam = "Pieter", Leeftijd = 21 };
+            var e = new { Naam = "Klaas",  Leeftijd = 45 };
+            var f = new { Leeftijd = 45, Naam = "Pieter" };
+
+            // Gelijk op reference
+            Assert.Equal(a, b);
+
+            // Gelijk op inhoud
+            Assert.Equal(a, c);
+
+            // Ongelijk op twee property
+            Assert.NotEqual(a, d);
+
+            // Ongelijk op eerste property
+            Assert.NotEqual(a, e);
+
+            // De types zijn al verschillend voor de compiler 
+            // omdat de volgorde van de properties anders is.
+            // Daarom kunnen ze niet met een standaard Equal vergeleken worden
+            // en casten we ze eerst allebei naar object.
+            Assert.NotEqual<object>(a, f);
+        }
+
+        [Fact]
         public void IsErEigenlijkEenVerschilTussenLambdasEnDelegates()
         {
             Action<int> a = i => { };
