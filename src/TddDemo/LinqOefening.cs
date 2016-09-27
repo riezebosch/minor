@@ -27,7 +27,7 @@ namespace TddDemo
                         where p.Length < 8
                         orderby p.Length, p
                         select p;
-            Assert.Equal(new[] { "Assen", "Alphen", "Arnhem" }, query);
+            Assert.Equal(new[] { "Assen", "Alphen", "Arnhem", "Zaandam" }, query);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace TddDemo
              */
 
             var query = plaatsnamen.Where(p => p.EndsWith("m")).Sum(p => p.Length);
-            Assert.Equal(15, query);
+            Assert.Equal(22, query);
         }
 
         [Fact]
