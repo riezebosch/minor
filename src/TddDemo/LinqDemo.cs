@@ -293,6 +293,25 @@ namespace TddDemo
         }
 
         [Fact]
+        public void HoeWerktDeMaxFunctie()
+        {
+            var people = new[]
+            {
+                new Person { Name = "Pieter", Age = 26 },
+                new Person { Name = "Klara", Age = 31 },
+                new Person { Name = "Kees", Age = 14 },
+                new Person { Name = "Henk", Age = 45 },
+                new Person { Name = "Ernst", Age = 23 }
+            };
+
+            var age = people.Max(p => p.Age);
+            Assert.Equal(45, age);
+
+            var oldest = people.OrderByDescending(p => p.Age).First();
+            Assert.Equal(45, oldest.Age);
+        }
+
+        [Fact]
         public void IsErEigenlijkEenVerschilTussenLambdasEnDelegates()
         {
             Action<int> a = i => { };
