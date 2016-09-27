@@ -262,6 +262,72 @@ namespace TddDemo
             var getal = default(int);
             Assert.Equal(0, getal);
         }
+
+        [Fact]
+        public void IsErEigenlijkEenVerschilTussenLambdasEnDelegates()
+        {
+            Action<int> a = i => { };
+
+
+            //DoeIetsMetEenEigenDelegate(new Action(() => { }));
+            DoeIetsMetDeActionEigenDelegate(a);
+        }
+
+        delegate void MyAction(int i);
+        private static void DoeIetsMetEenEigenDelegate(MyAction a)
+        {
+        }
+
+        private static void DoeIetsMetDeActionEigenDelegate(Action<int> a)
+        {
+        }
+
+        [Fact]
+        public void DefferedExecutionExplained()
+        {
+            var query = AlleGeheleGetallenBovenNul()
+                .Where(i => i % 2 == 0)
+                .Select(i => i * 3);
+
+            foreach (var getal in 
+                VermenigVuldigAlleItemsMetEenBepaaldGetal(
+                    FilterAlleEvenGetallen(AlleGeheleGetallenBovenNul()), 3))
+            {
+
+            }
+        }
+
+        private static bool IsGeteelGetal(int getal)
+        {
+            return getal % 2 == 0;
+        }
+
+        private IEnumerable<int> AlleGeheleGetallenBovenNul()
+        {
+            for (int i = 0; i <= int.MaxValue; i++)
+            {
+                yield return i;
+            }
+        }
+
+        IEnumerable<int> FilterAlleEvenGetallen(IEnumerable<int> items)
+        {
+            foreach (var item in items)
+            {
+                if (item % 2 == 0)
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        IEnumerable<int> VermenigVuldigAlleItemsMetEenBepaaldGetal(IEnumerable<int> items, int multiplier)
+        {
+            foreach (var item in items)
+            {
+                yield return item * multiplier;
+            }
+        }
     }
 
     internal class Hond : Dier
