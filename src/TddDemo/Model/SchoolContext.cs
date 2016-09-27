@@ -97,34 +97,14 @@ namespace TddDemo.Model
 
             modelBuilder.Entity<OnlineCourse>(entity =>
             {
-                entity.HasKey(e => e.CourseId)
-                    .HasName("PK_OnlineCourse");
-
-                entity.Property(e => e.CourseId)
-                    .HasColumnName("CourseID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.Url)
+                 entity.Property(e => e.Url)
                     .IsRequired()
                     .HasColumnName("URL")
                     .HasMaxLength(100);
-
-                entity.HasOne(d => d.Course)
-                    .WithOne(p => p.OnlineCourse)
-                    .HasForeignKey<OnlineCourse>(d => d.CourseId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_OnlineCourse_Course");
-            });
+             });
 
             modelBuilder.Entity<OnsiteCourse>(entity =>
             {
-                entity.HasKey(e => e.CourseId)
-                    .HasName("PK_OnsiteCourse");
-
-                entity.Property(e => e.CourseId)
-                    .HasColumnName("CourseID")
-                    .ValueGeneratedNever();
-
                 entity.Property(e => e.Days)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -134,12 +114,6 @@ namespace TddDemo.Model
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Time).HasColumnType("smalldatetime");
-
-                entity.HasOne(d => d.Course)
-                    .WithOne(p => p.OnsiteCourse)
-                    .HasForeignKey<OnsiteCourse>(d => d.CourseId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK_OnsiteCourse_Course");
             });
 
             modelBuilder.Entity<Person>(entity =>
@@ -190,8 +164,6 @@ namespace TddDemo.Model
         public virtual DbSet<CourseInstructor> CourseInstructor { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<OfficeAssignment> OfficeAssignment { get; set; }
-        public virtual DbSet<OnlineCourse> OnlineCourse { get; set; }
-        public virtual DbSet<OnsiteCourse> OnsiteCourse { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<StudentGrade> StudentGrade { get; set; }
     }

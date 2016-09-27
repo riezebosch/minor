@@ -3,11 +3,8 @@ using System.Collections.Generic;
 
 namespace TddDemo.Model
 {
-    public partial class OnlineCourse
+    public partial class OnlineCourse : Course
     {
-        public int CourseId { get; set; }
         public string Url { get; set; }
-
-        public virtual Course Course { get; set; }
     }
 }

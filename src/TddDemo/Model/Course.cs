@@ -17,8 +17,6 @@ namespace TddDemo.Model
         public int DepartmentId { get; set; }
 
         public virtual ICollection<CourseInstructor> CourseInstructor { get; set; }
-        public virtual OnlineCourse OnlineCourse { get; set; }
-        public virtual OnsiteCourse OnsiteCourse { get; set; }
         public virtual ICollection<StudentGrade> StudentGrade { get; set; }
         public virtual Department Department { get; set; }
     }
