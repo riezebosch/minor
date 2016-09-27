@@ -14,7 +14,7 @@ namespace TddDemo
         {
             using (var context = new SchoolContext())
             {
-                Assert.True(context.Course.OfType<OnsiteCourse>().Any());
+                Assert.True(context.Course.Any());
             }
         }
     }
