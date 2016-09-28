@@ -14,9 +14,9 @@ namespace TddDemo
 
         public void RaiseEventOnSeperateThread()
         {
-            Task.Run(() => 
+            Task.Run(async () => 
             {
-                Task.Delay(TimeSpan.FromSeconds(2));
+                await Task.Delay(TimeSpan.FromSeconds(2));
                 Raise?.Invoke();
             });
         }
@@ -24,23 +24,26 @@ namespace TddDemo
     }
     public class SynchronisatieDemo
     {
-        private bool isRaised;
+        private AutoResetEvent isRaised;
 
         [Fact]
         public void HoeSynchroniseerIkIetsWatOpVerschillendeThreadsWordtUitgevoerd()
         {
             var thing = new SomeEventRaisingThing();
             thing.Raise += React;
-            thing.RaiseEventOnSeperateThread();
 
-            Thread.Sleep(2000);
+            using (isRaised = new AutoResetEvent(false))
+            {
+                thing.RaiseEventOnSeperateThread();
 
-            Assert.True(isRaised);
+                bool result = isRaised.WaitOne(TimeSpan.FromSeconds(10));
+                Assert.True(result);
+            }
         }
 
         private void React()
         {
-            isRaised = true;
+            isRaised.Set();
         }
     }
 }
