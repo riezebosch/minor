@@ -33,6 +33,8 @@ namespace TddDemo
             thing.Raise += React;
             thing.RaiseEventOnSeperateThread();
 
+            Thread.Sleep(2000);
+
             Assert.True(isRaised);
         }
 
