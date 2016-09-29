@@ -101,6 +101,26 @@ namespace TddDemo
             CompareInputsToExtractedOutput(inputPaths, outputPath);
         }
 
+        [Fact]
+        public void DemoVanDeMemoryStream()
+        {
+            string input = "readable text";
+            using (var stream = new MemoryStream())
+            {
+                using (var sw = new StreamWriter(stream, System.Text.Encoding.UTF32, 1024, true))
+                {
+                    sw.Write(input);
+                }
+
+                stream.Seek(0, SeekOrigin.Begin);
+                using (var sr = new StreamReader(stream))
+                {
+                    var result = sr.ReadToEnd();
+                    Assert.Equal(input, result);
+                }
+            }
+        }
+
         private static void CompareInputsToExtractedOutput(List<string> inputPaths, string outputPath)
         {
             var temp = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
