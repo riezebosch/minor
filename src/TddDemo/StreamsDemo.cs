@@ -130,7 +130,7 @@ namespace TddDemo
             string input = "readable text";
             File.Delete(path);
 
-            using (Aes aes = CreateEncryptor())
+            using (Aes aes = CreateEncryptor("password"))
             {
                 using (var stream = File.Create(path))
                 {
@@ -155,7 +155,7 @@ namespace TddDemo
             string input = "readable text";
             File.Delete(path);
 
-            using (Aes aes = CreateEncryptor())
+            using (Aes aes = CreateEncryptor("password"))
             {
                 using (var stream = File.Create(path))
                 {
@@ -188,9 +188,9 @@ namespace TddDemo
             }
         }
 
-        private static Aes CreateEncryptor()
+        private static Aes CreateEncryptor(string password)
         {
-            var bytes = new Rfc2898DeriveBytes("password", Encoding.ASCII.GetBytes("salt is used to mask the password"));
+            var bytes = new Rfc2898DeriveBytes(password, Encoding.ASCII.GetBytes("salt is used to mask the password"));
 
             var aes = Aes.Create();
             aes.Key = bytes.GetBytes(aes.KeySize / 8);
