@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Shouldly;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -84,26 +86,57 @@ namespace TddDemo
         public void KanIkStreamsInElkaarVouwen()
         {
             // Arrange
-            var inputPath = "temp.txt";
-            var outputPath = "output.zip";
+            var inputPaths = new List<string> { "temp1.txt", "temp2.txt" };
+            var outputPath = "output.txt";
 
-            File.Delete(inputPath);
-            File.WriteAllText(inputPath, "some dummy content");
+            var data = CreateInputFiles(inputPaths);
 
-            using (var input = File.OpenRead(inputPath))
-            using (var output = File.Create(outputPath))
-            {
-                Copy(input, output);
-            }
+            // Act
+            CopyFilesToOutput(inputPaths, outputPath);
 
-            Assert.True(File.Exists(inputPath));
+            // Assert
+            inputPaths.ShouldAllBe(file => File.Exists(file));
             Assert.True(File.Exists(outputPath));
-            Assert.Equal(File.ReadAllText(inputPath), File.ReadAllText(outputPath));
+
+            CompareInputsToExtractedOutput(inputPaths, outputPath);
         }
 
-        private static void Copy(Stream input, Stream output)
+        private static void CompareInputsToExtractedOutput(List<string> inputPaths, string outputPath)
         {
-            input.CopyTo(output);
+            var temp = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            Directory.CreateDirectory(temp);
+
+            ZipFile.ExtractToDirectory(outputPath, temp);
+
+            foreach (var inputFile in inputPaths)
+            {
+                var outputFile = Path.Combine(temp, inputFile);
+                Assert.True(File.Exists(outputFile));
+                Assert.Equal(File.ReadAllText(inputFile), File.ReadAllText(outputFile));
+            }
+        }
+
+        private static IEnumerable<Guid> CreateInputFiles(List<string> inputPaths)
+        {
+            inputPaths.ForEach(File.Delete);
+            return inputPaths.Select(file => { var guid = Guid.NewGuid(); File.WriteAllText(file, guid.ToString()); return guid; }).ToList();
+        }
+
+        private static void CopyFilesToOutput(IEnumerable<string> inputPaths, string outputPath)
+        {
+            using (var zip = File.Open(outputPath, FileMode.Create))
+            using (var archive = new ZipArchive(zip, ZipArchiveMode.Create))
+            {
+                foreach (var inputPath in inputPaths)
+                {
+                    var entry = archive.CreateEntry(inputPath);
+                    using (var input = File.OpenRead(inputPath))
+                    using (var output = entry.Open())
+                    {
+                        input.CopyTo(output);
+                    }
+                }
+            }
         }
     }
 }
