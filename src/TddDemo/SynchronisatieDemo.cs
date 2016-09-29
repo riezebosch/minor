@@ -9,41 +9,46 @@ namespace TddDemo
 {
     class SomeEventRaisingThing
     {
-        public event Action Raise;
+        public event Action SomeEvent;
 
 
-        public void RaiseEventOnSeperateThread()
+        public void RaiseEventOnOtherThread()
         {
             Task.Run(async () => 
             {
                 await Task.Delay(TimeSpan.FromSeconds(2));
-                Raise?.Invoke();
+                SomeEvent?.Invoke();
             });
         }
 
     }
     public class SynchronisatieDemo
     {
-        private AutoResetEvent isRaised;
+        private AutoResetEvent eventIsRaised;
 
         [Fact]
         public void HoeSynchroniseerIkIetsWatOpVerschillendeThreadsWordtUitgevoerd()
         {
+            // Arrange
             var thing = new SomeEventRaisingThing();
-            thing.Raise += React;
+            thing.SomeEvent += ReactOnEvent;
 
-            using (isRaised = new AutoResetEvent(false))
+            using (eventIsRaised = new AutoResetEvent(false))
             {
-                thing.RaiseEventOnSeperateThread();
+                // Act
+                thing.RaiseEventOnOtherThread();
 
-                bool result = isRaised.WaitOne(TimeSpan.FromSeconds(10));
+                bool result = eventIsRaised
+                    .WaitOne(TimeSpan.FromSeconds(10));
+
+                // Assert
                 Assert.True(result);
             }
         }
 
-        private void React()
+        private void ReactOnEvent()
         {
-            isRaised.Set();
+            eventIsRaised.Set();
         }
     }
 }
