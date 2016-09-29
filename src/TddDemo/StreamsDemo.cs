@@ -79,5 +79,26 @@ namespace TddDemo
         {
             throw new NotImplementedException();
         }
+
+        [Fact]
+        public void KanIkStreamsInElkaarVouwen()
+        {
+            // Arrange
+            var inputPath = "temp.txt";
+            var outputPath = "output.zip";
+
+            File.Delete(inputPath);
+            File.WriteAllText(inputPath, "some dummy content");
+
+            using (var input = File.OpenRead(inputPath))
+            using (var output = File.Create(outputPath))
+            {
+                input.CopyTo(output);
+            }
+
+            Assert.True(File.Exists(inputPath));
+            Assert.True(File.Exists(outputPath));
+            Assert.Equal(File.ReadAllText(inputPath), File.ReadAllText(outputPath));
+        }
     }
 }
