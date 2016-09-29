@@ -5,8 +5,10 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace TddDemo
 {
@@ -110,6 +112,7 @@ namespace TddDemo
             {
                 var sw = new StreamWriter(stream);
                 sw.Write(input);
+                sw.Flush();
 
                 stream.Seek(0, SeekOrigin.Begin);
                 using (var sr = new StreamReader(stream))
@@ -123,21 +126,76 @@ namespace TddDemo
         [Fact]
         public void AfterEncryptionOriginalTextShouldNotBeVisible()
         {
+            string path = "encrypted.data";
             string input = "readable text";
-            using (var stream = new MemoryStream())
-            {
-                var aes = Aes.Create().CreateEncryptor();
-                var encrypted = new CryptoStream(stream, aes, CryptoStreamMode.Write);
-                var sw = new StreamWriter(encrypted);
-                sw.Write(input);
+            File.Delete(path);
 
-                stream.Seek(0, SeekOrigin.Begin);
-                using (var sr = new StreamReader(stream))
+            using (Aes aes = CreateEncryptor())
+            {
+                using (var stream = File.Create(path))
                 {
-                    var result = sr.ReadToEnd();
-                    Assert.NotEqual(input, result);
+                    WriteEncrypted(input, stream, aes);
+                }
+
+                using (var stream = File.OpenRead(path))
+                {
+                    using (var sr = new StreamReader(stream))
+                    {
+                        var result = sr.ReadToEnd();
+                        result.ShouldNotBe(input);
+                    }
                 }
             }
+        }
+
+        [Fact]
+        public void EncryptedStreamShouldBeReadableAfterDecrypted()
+        {
+            string path = "encrypted.data";
+            string input = "readable text";
+            File.Delete(path);
+
+            using (Aes aes = CreateEncryptor())
+            {
+                using (var stream = File.Create(path))
+                {
+                    WriteEncrypted(input, stream, aes);
+                }
+
+                using (var stream = File.OpenRead(path))
+                {
+                    var result = ReadEncrypted(input, aes, stream);
+                    result.ShouldBe(input);
+                }
+            }
+        }
+
+        private static string ReadEncrypted(string input, Aes aes, FileStream stream)
+        {
+            using (var read = new CryptoStream(stream, aes.CreateDecryptor(), CryptoStreamMode.Read))
+            using (var sr = new StreamReader(read))
+            {
+                return sr.ReadToEnd();
+            }
+        }
+
+        private static void WriteEncrypted(string input, Stream stream, Aes aes)
+        {
+            using (var write = new CryptoStream(stream, aes.CreateEncryptor(), CryptoStreamMode.Write))
+            using (var sw = new StreamWriter(write))
+            {
+                sw.Write(input);
+            }
+        }
+
+        private static Aes CreateEncryptor()
+        {
+            var bytes = new Rfc2898DeriveBytes("password", Encoding.ASCII.GetBytes("salt is used to mask the password"));
+
+            var aes = Aes.Create();
+            aes.Key = bytes.GetBytes(aes.KeySize / 8);
+            aes.IV = bytes.GetBytes(aes.BlockSize / 8);
+            return aes;
         }
 
         private static void CompareInputsToExtractedOutput(List<string> inputPaths, string outputPath)
