@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -107,16 +108,34 @@ namespace TddDemo
             string input = "readable text";
             using (var stream = new MemoryStream())
             {
-                using (var sw = new StreamWriter(stream, System.Text.Encoding.UTF32, 1024, true))
-                {
-                    sw.Write(input);
-                }
+                var sw = new StreamWriter(stream);
+                sw.Write(input);
 
                 stream.Seek(0, SeekOrigin.Begin);
                 using (var sr = new StreamReader(stream))
                 {
                     var result = sr.ReadToEnd();
                     Assert.Equal(input, result);
+                }
+            }
+        }
+
+        [Fact]
+        public void AfterEncryptionOriginalTextShouldNotBeVisible()
+        {
+            string input = "readable text";
+            using (var stream = new MemoryStream())
+            {
+                var aes = Aes.Create().CreateEncryptor();
+                var encrypted = new CryptoStream(stream, aes, CryptoStreamMode.Write);
+                var sw = new StreamWriter(encrypted);
+                sw.Write(input);
+
+                stream.Seek(0, SeekOrigin.Begin);
+                using (var sr = new StreamReader(stream))
+                {
+                    var result = sr.ReadToEnd();
+                    Assert.NotEqual(input, result);
                 }
             }
         }
