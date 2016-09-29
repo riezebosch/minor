@@ -93,12 +93,17 @@ namespace TddDemo
             using (var input = File.OpenRead(inputPath))
             using (var output = File.Create(outputPath))
             {
-                input.CopyTo(output);
+                Copy(input, output);
             }
 
             Assert.True(File.Exists(inputPath));
             Assert.True(File.Exists(outputPath));
             Assert.Equal(File.ReadAllText(inputPath), File.ReadAllText(outputPath));
+        }
+
+        private static void Copy(Stream input, Stream output)
+        {
+            input.CopyTo(output);
         }
     }
 }
