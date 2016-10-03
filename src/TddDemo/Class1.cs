@@ -23,7 +23,7 @@ namespace TddDemo
             }
         }
 
-        [Fact]  
+        [Fact]
         public void HoeKomIkAanDeQueryInCSharp()
         {
             using (var context = new SchoolContext())
@@ -48,6 +48,30 @@ namespace TddDemo
             }
         }
 
+        [Fact]
+        public void HoeMaakIkEenTransaction()
+        {
+            using (var context = new SchoolContext())
+            using (var tx = context.Database.BeginTransaction())
+            {
+                context.Person.Add(new Person { FirstName = "Test", LastName = "Test" });
+                context.SaveChanges();
+
+                context
+                    .Person
+                    .Any(p => p.FirstName == "Test")
+                    .ShouldBeTrue();
+            }
+
+            using (var context = new SchoolContext())
+            {
+                context
+                    .Person
+                    .Any(p => p.FirstName == "Test")
+                    .ShouldBeFalse();
+            }
+        }
+
         /// <summary>
         /// <see cref="https://docs.efproject.net/en/latest/miscellaneous/logging.html"/>
         /// </summary>
@@ -60,7 +84,7 @@ namespace TddDemo
                 _log = log;
             }
 
-            public ILogger CreateLogger(string categoryName) =>new MyLogger(_log);
+            public ILogger CreateLogger(string categoryName) => new MyLogger(_log);
 
             public void Dispose() { }
 
