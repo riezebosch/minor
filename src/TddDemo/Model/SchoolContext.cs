@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -6,10 +7,21 @@ namespace TddDemo.Model
 {
     public partial class SchoolContext : DbContext
     {
+        public SchoolContext(DbContextOptions options) : base(options)
+        {
+        }
+
+        public SchoolContext() 
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=School;Trusted_Connection=True");
+            if (!optionsBuilder.IsConfigured)
+            {
+                #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=School;Trusted_Connection=True");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

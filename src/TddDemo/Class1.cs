@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,6 +63,54 @@ namespace TddDemo
                     .Person
                     .Any(p => p.FirstName == "Test")
                     .ShouldBeTrue();
+            }
+
+            using (var context = new SchoolContext())
+            {
+                context
+                    .Person
+                    .Any(p => p.FirstName == "Test")
+                    .ShouldBeFalse();
+            }
+        }
+
+        /// <summary>
+        /// https://docs.efproject.net/en/latest/saving/transactions.html#using-external-dbtransactions-relational-databases-only
+        /// </summary>
+        [Fact]
+        public void HoeGebruikIkEenEigenTransaction()
+        {
+            using (var connection = new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=School;Integrated Security=SSPI"))
+            {
+                connection.Open();
+
+                using (var tx = connection.BeginTransaction())
+                {
+                    var options = new DbContextOptionsBuilder<SchoolContext>()
+                        .UseSqlServer(connection)
+                        .Options;
+
+                    using (var context = new SchoolContext(options))
+                    {
+                        context.Database.UseTransaction(tx);
+                        context.Person.Add(new Person { FirstName = "Test", LastName = "Test" });
+                        context.SaveChanges();
+
+                        context
+                            .Person
+                            .Any(p => p.FirstName == "Test")
+                            .ShouldBeTrue();
+                    }
+
+                    using (var context = new SchoolContext(options))
+                    {
+                        context.Database.UseTransaction(tx);
+                        context
+                            .Person
+                            .Any(p => p.FirstName == "Test")
+                            .ShouldBeTrue();
+                    }
+                }
             }
 
             using (var context = new SchoolContext())
