@@ -122,6 +122,41 @@ namespace TddDemo
             }
         }
 
+        [Fact]
+        public void HoeWerktUpdateMetChangeTrackerDemo()
+        {
+            using (var context = new SchoolContext())
+            using (context.Database.BeginTransaction())
+            {
+                // Arrange
+                var kim = context
+                    .Person
+                    .First(p => p.FirstName == "Kim");
+
+                // Act
+                kim.FirstName = "Kam";
+
+                // Assert
+                kim.ShouldBeOfType<Person>();
+
+                var entry = context
+                    .ChangeTracker
+                    .Entries<Person>()
+                    .Single();
+
+                entry.Entity.ShouldBe(kim);
+                entry
+                    .Property("FirstName")
+                    .OriginalValue
+                    .ShouldBe("Kim");
+
+                entry
+                    .Property("FirstName")
+                    .CurrentValue
+                    .ShouldBe("Kam");
+            }
+        }
+
         /// <summary>
         /// <see cref="https://docs.efproject.net/en/latest/miscellaneous/logging.html"/>
         /// </summary>
