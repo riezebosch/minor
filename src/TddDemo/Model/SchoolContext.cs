@@ -47,7 +47,7 @@ namespace TddDemo.Model
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_CourseInstructor_Course");
 
-                entity.HasOne(d => d.Person)
+                entity.HasOne(d => d.Instructor)
                     .WithMany(p => p.CourseInstructor)
                     .HasForeignKey(d => d.PersonId)
                     .OnDelete(DeleteBehavior.Restrict)
@@ -125,11 +125,14 @@ namespace TddDemo.Model
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.HireDate).HasColumnType("datetime");
-
                 entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Instructor>(entity =>
+            {
+                entity.Property(e => e.HireDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<StudentGrade>(entity =>

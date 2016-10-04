@@ -166,7 +166,7 @@ namespace TddDemo
                 kim.FirstName = "Kam";
 
                 // Assert
-                kim.ShouldBeOfType<Person>();
+                kim.ShouldBeAssignableTo<Person>();
 
                 var entry = context
                     .ChangeTracker
@@ -183,6 +183,15 @@ namespace TddDemo
                     .Property("FirstName")
                     .CurrentValue
                     .ShouldBe("Kam");
+            }
+        }
+
+        [Fact]
+        public void PersonShouldBeBaseClassOfStudentAndInstructor()
+        {
+            using (var context = new SchoolContext(DefaultOptions))
+            {
+                var instructor = context.Person.OfType<Instructor>().First();
             }
         }
 

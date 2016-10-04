@@ -9,6 +9,6 @@ namespace TddDemo.Model
         public string Location { get; set; }
         public byte[] Timestamp { get; set; }
 
-        public virtual Person Instructor { get; set; }
+        public virtual Instructor Instructor { get; set; }
     }
 }
