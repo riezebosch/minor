@@ -20,5 +20,6 @@ namespace TddDemo.Model
         public virtual ICollection<CourseInstructor> CourseInstructor { get; set; }
         public virtual OfficeAssignment OfficeAssignment { get; set; }
         public virtual ICollection<StudentGrade> StudentGrade { get; set; }
+        public DateTime BirthDate { get; internal set; }
     }
 }

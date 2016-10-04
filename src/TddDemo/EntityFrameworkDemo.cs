@@ -16,10 +16,39 @@ namespace TddDemo
 {
     public class EntityFrameworkDemo
     {
+        public DbContextOptions DefaultOptions
+        {
+            get
+            {
+                var builder = new DbContextOptionsBuilder<SchoolContext>()
+                    .UseSqlServer(@"Server=.\SQLEXPRESS;Database=School;Trusted_Connection=True");
+
+                return builder.Options;
+            }
+        }
+
+        [Fact]
+        public void WatKanIkMetMigrationsAllemaalBereiken()
+        {
+            using (var context = new SchoolContext(DefaultOptions))
+            using (context.Database.BeginTransaction())
+            {
+                var p = new Person
+                {
+                    FirstName = "TEMP",
+                    LastName = "TEMP",
+                    BirthDate = new DateTime(1984, 03, 05)
+                };
+
+                context.Person.Add(p);
+                context.SaveChanges();
+            }
+        }
+
         [Fact]
         public void OnsiteAndOnlineCourseAreDerivedFromCourse()
         {
-            using (var context = new SchoolContext())
+            using (var context = new SchoolContext(DefaultOptions))
             {
                 Assert.True(context.Course.OfType<OnsiteCourse>().Any());
             }
@@ -28,7 +57,7 @@ namespace TddDemo
         [Fact]
         public void HoeKomIkAanDeQueryInCSharp()
         {
-            using (var context = new SchoolContext())
+            using (var context = new SchoolContext(DefaultOptions))
             {
                 // Arrange
                 var log = new List<LogItem>();
@@ -53,7 +82,7 @@ namespace TddDemo
         [Fact]
         public void HoeMaakIkEenTransaction()
         {
-            using (var context = new SchoolContext())
+            using (var context = new SchoolContext(DefaultOptions))
             using (var tx = context.Database.BeginTransaction())
             {
                 context.Person.Add(new Person { FirstName = "Test", LastName = "Test" });
@@ -65,7 +94,7 @@ namespace TddDemo
                     .ShouldBeTrue();
             }
 
-            using (var context = new SchoolContext())
+            using (var context = new SchoolContext(DefaultOptions))
             {
                 context
                     .Person
@@ -113,7 +142,7 @@ namespace TddDemo
                 }
             }
 
-            using (var context = new SchoolContext())
+            using (var context = new SchoolContext(DefaultOptions))
             {
                 context
                     .Person
@@ -125,7 +154,7 @@ namespace TddDemo
         [Fact]
         public void HoeWerktUpdateMetChangeTrackerDemo()
         {
-            using (var context = new SchoolContext())
+            using (var context = new SchoolContext(DefaultOptions))
             using (context.Database.BeginTransaction())
             {
                 // Arrange
@@ -191,6 +220,21 @@ namespace TddDemo
 
                 public IDisposable BeginScope<TState>(TState state) => null;
             }
+        }
+    }
+
+    /// <summary>
+    /// Required to make the migrations work again:
+    /// https://docs.efproject.net/en/latest/miscellaneous/configuring-dbcontext.html#using-idbcontextfactory-tcontext
+    /// </summary>
+    internal class SchoolContextFactory : IDbContextFactory<SchoolContext>
+    {
+        public SchoolContext Create(DbContextFactoryOptions options)
+        {
+            var builder = new DbContextOptionsBuilder<SchoolContext>()
+                .UseSqlServer(@"Server=.\SQLEXPRESS;Database=School;Trusted_Connection=True");
+
+            return new SchoolContext(builder.Options);
         }
     }
 
