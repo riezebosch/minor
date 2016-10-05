@@ -38,7 +38,14 @@ namespace TddDemo.Migrations
                 type: "smalldatetime",
                 nullable: true);
 
-            migrationBuilder.Sql("MERGE Course AS target USING OnsiteCourse as source ON (target.CourseID = source.CourseID) WHEN MATCHED THEN UPDATE SET target.Location=source.Location,target.Days=source.Days,target.Time=source.Time,target.Discriminator='OnsiteCourse'");
+            migrationBuilder.Sql(@"MERGE Course AS target 
+USING OnsiteCourse as source ON (target.CourseID = source.CourseID) 
+WHEN MATCHED THEN 
+UPDATE SET 
+    target.Location=source.Location,
+    target.Days=source.Days,
+    target.Time=source.Time,
+    target.Discriminator='OnsiteCourse'");
             migrationBuilder.Sql("MERGE Course AS target USING OnlineCourse as source ON (target.CourseID = source.CourseID) WHEN MATCHED THEN UPDATE SET target.URL=source.URL,target.Discriminator='OnlineCourse'");
 
             migrationBuilder.DropTable(

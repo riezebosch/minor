@@ -133,6 +133,7 @@ namespace TddDemo.Model
             modelBuilder.Entity<Instructor>(entity =>
             {
                 entity.Property(e => e.HireDate).HasColumnType("datetime");
+                entity.Property(e => e.HireDate).IsRequired();
             });
 
             modelBuilder.Entity<StudentGrade>(entity =>

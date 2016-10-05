@@ -8,7 +8,7 @@ using TddDemo.Model;
 namespace TddDemo.Migrations
 {
     [DbContext(typeof(SchoolContext))]
-    [Migration("20161004090213_Instructor")]
+    [Migration("20161004101025_Instructor")]
     partial class Instructor
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,9 +124,6 @@ namespace TddDemo.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 50);
 
-                    b.Property<DateTime?>("HireDate")
-                        .HasColumnType("datetime");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 50);
@@ -201,6 +198,9 @@ namespace TddDemo.Migrations
                 {
                     b.HasBaseType("TddDemo.Model.Person");
 
+                    b.Property<DateTime?>("HireDate")
+                        .IsRequired()
+                        .HasColumnType("datetime");
 
                     b.ToTable("Instructor");
 
@@ -222,7 +222,7 @@ namespace TddDemo.Migrations
                         .HasForeignKey("CourseId")
                         .HasConstraintName("FK_CourseInstructor_Course");
 
-                    b.HasOne("TddDemo.Model.Person", "Person")
+                    b.HasOne("TddDemo.Model.Instructor", "Instructor")
                         .WithMany("CourseInstructor")
                         .HasForeignKey("PersonId")
                         .HasConstraintName("FK_CourseInstructor_Person");
@@ -230,7 +230,7 @@ namespace TddDemo.Migrations
 
             modelBuilder.Entity("TddDemo.Model.OfficeAssignment", b =>
                 {
-                    b.HasOne("TddDemo.Model.Person", "Instructor")
+                    b.HasOne("TddDemo.Model.Instructor", "Instructor")
                         .WithOne("OfficeAssignment")
                         .HasForeignKey("TddDemo.Model.OfficeAssignment", "InstructorId")
                         .HasConstraintName("FK_OfficeAssignment_Person");

@@ -195,6 +195,17 @@ namespace TddDemo
             }
         }
 
+        [Fact]
+        public void RequiredFieldInTablePerHierarchy()
+        {
+            using (var context = new SchoolContext(DefaultOptions))
+            using (context.Database.BeginTransaction())
+            {
+                context.Person.Add(new Instructor { FirstName = "TEST", LastName = "TEST" });
+                Should.Throw<DbUpdateException>(() => context.SaveChanges());
+            }
+        }
+
         /// <summary>
         /// <see cref="https://docs.efproject.net/en/latest/miscellaneous/logging.html"/>
         /// </summary>

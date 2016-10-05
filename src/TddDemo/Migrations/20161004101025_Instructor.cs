@@ -15,7 +15,6 @@ namespace TddDemo.Migrations
                 defaultValue: "");
 
             migrationBuilder.Sql("UPDATE Person SET Discriminator='Instructor' WHERE HireDate IS NOT NULL");
-
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

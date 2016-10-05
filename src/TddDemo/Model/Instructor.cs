@@ -9,7 +9,7 @@ namespace TddDemo.Model
         {
             CourseInstructor = new HashSet<CourseInstructor>();
         }
-        public DateTime? HireDate { get; set; }
+        public DateTime HireDate { get; set; }
         public virtual ICollection<CourseInstructor> CourseInstructor { get; set; }
         public virtual OfficeAssignment OfficeAssignment { get; set; }
 
