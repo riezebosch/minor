@@ -26,15 +26,21 @@ namespace TddDemo
                     Id = 0,
                     Title = "Narcos"
                 };
+                context.Series.Add(serie);
 
-                serie.Seasons.Add(new Season
+                var season = new Season
+                {
+                    Id = 0,
+                    Title = "Season 1"
+                };
+                serie.Seasons.Add(season);
+
+                var episode = new Episode
                 {
                     Id = 0,
                     Title = "Descenso"
-                });
-
-                context.Series.Add(serie);
-
+                };
+                season.Episodes.Add(episode);
                 context.SaveChanges();
             }
         }
@@ -47,12 +53,15 @@ namespace TddDemo
         {
             using (var context = new SeriesContext(options))
             {
-                var narcos = context
-                    .Series
-                    .Include(s => s.Seasons) // dit is nodig om ook de seasons erbij te laden
-                    .First(s => s.Title == "Narcos");
+                var serie = from s in context
+                                .Series
+                                .Include(s => s.Seasons) // dit is nodig om ook de seasons erbij te laden
+                                .ThenInclude(s => s.Episodes)
+                            where s.Seasons.Any() && s.Seasons.SelectMany(season => season.Episodes).Any()
+                            select s;
 
-                Assert.True(narcos.Seasons.Any());
+                Assert.True(serie.First().Seasons.Any());
+                Assert.True(serie.First().Seasons.First().Episodes.Any());
             }
         }
 
