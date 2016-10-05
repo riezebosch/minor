@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TddDemo;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeriesWebApp.Controllers
 {
@@ -18,7 +19,7 @@ namespace SeriesWebApp.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Series.ToList());
+            return View(_context.Series.Include(s => s.Seasons).ThenInclude(s => s.Episodes).ToList());
         }
     }
 }
