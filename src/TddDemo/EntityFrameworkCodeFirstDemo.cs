@@ -18,6 +18,9 @@ namespace TddDemo
 
             using (var context = new SeriesContext(options))
             {
+                context.Database.EnsureDeleted();
+                context.Database.Migrate(); 
+
                 context.Series.Add(new Serie
                 {
                     Id = 0,
