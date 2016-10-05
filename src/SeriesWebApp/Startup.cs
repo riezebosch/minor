@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TddDemo;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeriesWebApp
 {
@@ -29,6 +31,8 @@ namespace SeriesWebApp
         {
             // Add framework services.
             services.AddMvc();
+            services.AddDbContext<SeriesContext>(options =>
+            options.UseSqlServer(@"Server=.\SQLEXPRESS;Database=Series;Trusted_Connection=true"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

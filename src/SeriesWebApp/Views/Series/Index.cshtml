@@ -1,0 +1,9 @@
+﻿@model IEnumerable<TddDemo.Serie>
+<h2>Series</h2>
+<table class="table">
+    <tr><th>Title</th></tr>
+    @foreach (var item in Model)
+    {
+        <tr><td>@item.Title</td></tr>
+    }
+</table>
