@@ -10,24 +10,49 @@ namespace TddDemo
 {
     public class EntityFrameworkCodeFirstDemo
     {
+        DbContextOptions<SeriesContext> options = new DbContextOptionsBuilder<SeriesContext>()
+            .UseSqlServer(@"Server=.\SQLEXPRESS;Database=Series;Trusted_Connection=true").Options;
+
         [Fact]
         public void BeginnenMetEenContext()
         {
-            var options = new DbContextOptionsBuilder<SeriesContext>()
-                .UseSqlServer(@"Server=.\SQLEXPRESS;Database=Series;Trusted_Connection=true").Options;
 
             using (var context = new SeriesContext(options))
             {
-                context.Database.EnsureDeleted();
-                context.Database.Migrate(); 
+                context.Database.Migrate();
 
-                context.Series.Add(new Serie
+                var serie = new Serie
                 {
                     Id = 0,
                     Title = "Narcos"
+                };
+
+                serie.Seasons.Add(new Season
+                {
+                    Id = 0,
+                    Title = "Descenso"
                 });
 
+                context.Series.Add(serie);
+
                 context.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Eager loading: http://ef.readthedocs.io/en/latest/querying/related-data.html#eager-loading
+        /// </summary>
+        [Fact]
+        public void HoeNeemIkSeizoenenMeeBijHetOpvragenVanEenSerie()
+        {
+            using (var context = new SeriesContext(options))
+            {
+                var narcos = context
+                    .Series
+                    .Include(s => s.Seasons) // dit is nodig om ook de seasons erbij te laden
+                    .First(s => s.Title == "Narcos");
+
+                Assert.True(narcos.Seasons.Any());
             }
         }
 
