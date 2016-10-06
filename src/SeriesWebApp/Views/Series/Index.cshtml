@@ -1,9 +1,10 @@
-﻿@model IEnumerable<TddDemo.Serie>
+﻿@using TddDemo
+@model IEnumerable<Serie>
 <h2>Series</h2>
 <table class="table">
     <tr><th>Title</th></tr>
     @foreach (var item in Model)
     {
-        <tr><td>@item.Title</td></tr>
+        <tr><td>@Html.ActionLink(item.Title, "Details", new { item.Id })</td></tr>
     }
 </table>
