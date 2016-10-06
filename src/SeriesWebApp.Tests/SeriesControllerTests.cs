@@ -92,7 +92,7 @@ namespace SeriesWebApp.Tests
         }
 
         [Fact]
-        public void UpdateShouldRedirectToIndex()
+        public void UpdateShouldRedirectToDetails()
         {
             using (var context = CreateContext())
             {
