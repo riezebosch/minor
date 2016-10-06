@@ -5,6 +5,6 @@
     <tr><th>Title</th></tr>
     @foreach (var item in Model)
     {
-        <tr><td>@Html.ActionLink(item.Title, "Details", new { item.Id })</td></tr>
+        <tr><td><a asp-action="Details" asp-route-id="@item.Id">@item.Title</a></td></tr>
     }
 </table>
