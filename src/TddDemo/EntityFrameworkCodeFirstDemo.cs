@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using Microsoft.Data.Sqlite;
 
 namespace TddDemo
 {
@@ -94,6 +95,45 @@ namespace TddDemo
                         var ex = Assert.Throws<DbUpdateException>(() => context.SaveChanges());
                         Assert.Contains("UNIQUE", ex.InnerException.Message);
                         Assert.Contains("UNIEK", ex.InnerException.Message);
+                    }
+                }
+            }
+        }
+
+        [Fact]
+        public void HoeWerkenTransactionsEnUniqueConstraintsTegenSqlite()
+        {
+            using (var connection = new SqliteConnection(@"FileName=test.db"))
+            {
+                connection.Open();
+
+                var options = new DbContextOptionsBuilder<SeriesContext>()
+                    .UseSqlite(connection)
+                    .Options;
+
+                using (var context = new SeriesContext(options))
+                {
+                    context.Database.EnsureCreated();
+                }
+
+
+                using (var tx = connection.BeginTransaction())
+                {
+                    // Arrange
+                    using (var context = new SeriesContext(options))
+                    {
+                        context.Database.UseTransaction(tx);
+                        context.Series.Add(new Serie { Title = "UNIEK" });
+                        context.SaveChanges();
+                    }
+
+                    using (var context = new SeriesContext(options))
+                    {
+                        context.Database.UseTransaction(tx);
+                        context.Series.Add(new Serie { Title = "UNIEK" });
+
+                        var ex = Assert.Throws<DbUpdateException>(() => context.SaveChanges());
+                        Assert.Contains("UNIQUE", ex.InnerException.Message);
                     }
                 }
             }
