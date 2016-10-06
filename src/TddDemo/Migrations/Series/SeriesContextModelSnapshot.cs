@@ -53,12 +53,12 @@ namespace TddDemo.Migrations.Series
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Title");
+                    b.HasIndex("Title")
+                        .IsUnique();
 
                     b.ToTable("Series");
                 });

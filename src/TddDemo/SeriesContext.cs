@@ -16,7 +16,7 @@ namespace TddDemo
         {
             modelBuilder.Entity<Serie>(entity =>
             {
-                entity.HasAlternateKey(e => e.Title);
+                entity.HasIndex(u => u.Title).IsUnique();
             });
         }
     }

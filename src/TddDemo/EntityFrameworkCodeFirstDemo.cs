@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Data.Sqlite;
+using System.IO;
 
 namespace TddDemo
 {
@@ -93,7 +94,7 @@ namespace TddDemo
                         context.Series.Add(new Serie { Title = "UNIEK" });
 
                         var ex = Assert.Throws<DbUpdateException>(() => context.SaveChanges());
-                        Assert.Contains("UNIQUE", ex.InnerException.Message);
+                        Assert.Contains("duplicate", ex.InnerException.Message);
                         Assert.Contains("UNIEK", ex.InnerException.Message);
                     }
                 }
@@ -103,7 +104,10 @@ namespace TddDemo
         [Fact]
         public void HoeWerkenTransactionsEnUniqueConstraintsTegenSqlite()
         {
-            using (var connection = new SqliteConnection(@"FileName=test.db"))
+            var file = "test.db";
+            File.Delete(file);
+
+            using (var connection = new SqliteConnection($"FileName={file}"))
             {
                 connection.Open();
 

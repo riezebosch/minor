@@ -4,25 +4,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TddDemo.Migrations.Series
 {
-    public partial class UniqueOpTitleVanSeries : Migration
+    public partial class UniqueKeyWithIndex : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
                 name: "Title",
                 table: "Series",
-                nullable: false);
+                nullable: true);
 
-            migrationBuilder.AddUniqueConstraint(
-                name: "AK_Series_Title",
+            migrationBuilder.CreateIndex(
+                name: "IX_Series_Title",
                 table: "Series",
-                column: "Title");
+                column: "Title",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropUniqueConstraint(
-                name: "AK_Series_Title",
+            migrationBuilder.DropIndex(
+                name: "IX_Series_Title",
                 table: "Series");
 
             migrationBuilder.AlterColumn<string>(

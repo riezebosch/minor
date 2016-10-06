@@ -8,8 +8,8 @@ using TddDemo;
 namespace TddDemo.Migrations.Series
 {
     [DbContext(typeof(SeriesContext))]
-    [Migration("20161006084225_UniqueOpTitleVanSeries")]
-    partial class UniqueOpTitleVanSeries
+    [Migration("20161006125807_UniqueKeyWithIndex")]
+    partial class UniqueKeyWithIndex
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,12 +54,12 @@ namespace TddDemo.Migrations.Series
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Title");
+                    b.HasIndex("Title")
+                        .IsUnique();
 
                     b.ToTable("Series");
                 });

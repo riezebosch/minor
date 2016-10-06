@@ -1,5 +1,5 @@
 ﻿@model TddDemo.Serie
-<h2>@Model.Title</h2>
+<h2><a asp-action="Edit" asp-route-id="@Model.Id">@Model.Title</a></h2>
 <ul>
     @foreach (var season in Model.Seasons)
     {

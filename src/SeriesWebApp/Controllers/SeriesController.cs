@@ -37,5 +37,40 @@ namespace SeriesWebApp.Controllers
 
             return NotFound(id);
         }
+
+        public IActionResult Edit(int id)
+        {
+            var serie = _context
+                .Series
+                .FirstOrDefault(s => s.Id == id);
+
+            if (serie != null)
+            {
+                return View(serie); 
+            }
+            else
+            {
+                return NotFound(id);
+            }
+        }
+
+        public IActionResult Update(int id, string title)
+        {
+            var serie = _context
+                .Series
+                .FirstOrDefault(s => s.Id == id);
+
+            if (serie != null)
+            {
+                serie.Title = title;
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return NotFound(id);
+            }
+        }
     }
 }

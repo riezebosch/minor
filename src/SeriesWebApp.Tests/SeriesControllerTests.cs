@@ -47,14 +47,7 @@ namespace SeriesWebApp.Tests
         [Fact]
         public void DetailsShouldReturnErrorWhenSerieNotExists()
         {
-            using (var context = CreateContext())
-            {
-                var controller = new SeriesController(context);
-                var result = controller.Details(-1);
-
-                var notfound = Assert.IsType<NotFoundObjectResult>(result);
-                Assert.Equal(notfound.Value, -1);
-            }
+            AssertNotFound(controller => controller.Details(-1), -1);
         }
 
         [Fact]
@@ -70,6 +63,80 @@ namespace SeriesWebApp.Tests
                 var model = Assert.IsType<Serie>(result.Model);
 
                 Assert.True(model.Seasons.SelectMany(s => s.Episodes).Any());
+            }
+        }
+
+        [Fact]
+        public void EditShouldReturnErrorWhenSerieNotExists()
+        {
+            AssertNotFound(controller => controller.Edit(-1), -1);
+        }
+
+        [Fact]
+        public void UpdateShouldSaveChangesToContext()
+        {
+            var title = Guid.NewGuid().ToString();
+
+            using (var context = CreateContext())
+            {
+                var serie = context.Series.First();
+                var controller = new SeriesController(context);
+
+                controller.Update(serie.Id, title);
+            }
+
+            using (var context = CreateContext())
+            {
+                Assert.True(context.Series.Any(s => s.Title == title));
+            }
+        }
+
+        [Fact]
+        public void UpdateShouldRedirectToIndex()
+        {
+            using (var context = CreateContext())
+            {
+                var serie = context.Series.First();
+                var controller = new SeriesController(context);
+                var view = controller.Update(serie.Id, "");
+
+                var result = Assert.IsType<RedirectToActionResult>(view);
+                
+                Assert.Equal(result.ActionName, "Index");
+            }
+        }
+
+        [Fact]
+        public void UpdateShouldReturnErrorWhenSerieNotExists()
+        {
+            AssertNotFound(controller => controller.Update(-1, ""), -1);
+        }
+
+        private void AssertNotFound(Func<SeriesController, IActionResult> action, object value)
+        {
+            using (var context = CreateContext())
+            {
+                var controller = new SeriesController(context);
+                var result = action(controller);
+
+                var notfound = Assert.IsType<NotFoundObjectResult>(result);
+                Assert.Equal(notfound.Value, value);
+            }
+        }
+
+        [Fact]
+        public void EditShouldShowSpecificSerie()
+        {
+            using (var context = CreateContext())
+            {
+                var serie = context.Series.First();
+                var controller = new SeriesController(context);
+                var view = controller.Edit(serie.Id);
+
+                var result = Assert.IsType<ViewResult>(view);
+                var model = Assert.IsType<Serie>(result.Model);
+
+                Assert.Equal(serie, model);
             }
         }
 
