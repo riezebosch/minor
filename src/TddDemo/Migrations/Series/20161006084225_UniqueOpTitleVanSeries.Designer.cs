@@ -8,9 +8,10 @@ using TddDemo;
 namespace TddDemo.Migrations.Series
 {
     [DbContext(typeof(SeriesContext))]
-    partial class SeriesContextModelSnapshot : ModelSnapshot
+    [Migration("20161006084225_UniqueOpTitleVanSeries")]
+    partial class UniqueOpTitleVanSeries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")

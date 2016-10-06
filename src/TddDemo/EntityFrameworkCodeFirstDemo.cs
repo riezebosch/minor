@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -24,7 +25,7 @@ namespace TddDemo
                 var serie = new Serie
                 {
                     Id = 0,
-                    Title = "Narcos"
+                    Title = $"Narcos{Guid.NewGuid()}"
                 };
                 context.Series.Add(serie);
 
@@ -62,6 +63,39 @@ namespace TddDemo
 
                 Assert.True(serie.First().Seasons.Any());
                 Assert.True(serie.First().Seasons.First().Episodes.Any());
+            }
+        }
+
+        [Fact]
+        public void DeTitleVanEenSerieMoetUniekZijn()
+        {
+            using (var connection = new SqlConnection(@"Server=.\SQLEXPRESS;Database=Series;Trusted_Connection=true"))
+            {
+                connection.Open();
+                using (var tx = connection.BeginTransaction())
+                {
+                    var options = new DbContextOptionsBuilder<SeriesContext>()
+                        .UseSqlServer(connection)
+                        .Options;
+
+                    // Arrange
+                    using (var context = new SeriesContext(options))
+                    {
+                        context.Database.UseTransaction(tx);
+                        context.Series.Add(new Serie { Title = "UNIEK" });
+                        context.SaveChanges();
+                    }
+
+                    using (var context = new SeriesContext(options))
+                    {
+                        context.Database.UseTransaction(tx);
+                        context.Series.Add(new Serie { Title = "UNIEK" });
+
+                        var ex = Assert.Throws<DbUpdateException>(() => context.SaveChanges());
+                        Assert.Contains("UNIQUE", ex.InnerException.Message);
+                        Assert.Contains("UNIEK", ex.InnerException.Message);
+                    }
+                }
             }
         }
 

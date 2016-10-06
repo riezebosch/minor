@@ -11,5 +11,13 @@ namespace TddDemo
         }
 
         public DbSet<Serie> Series { get; internal set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Serie>(entity =>
+            {
+                entity.HasAlternateKey(e => e.Title);
+            });
+        }
     }
 }
