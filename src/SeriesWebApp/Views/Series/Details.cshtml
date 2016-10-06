@@ -1,2 +1,16 @@
 ﻿@model TddDemo.Serie
 <h2>@Model.Title</h2>
+<ul>
+    @foreach (var season in Model.Seasons)
+    {
+        <li>
+            @season.Title
+            <ul>
+                @foreach (var episode in season.Episodes)
+                {
+                    <li>@episode.Title</li>
+                }
+            </ul>
+        </li>
+    }
+</ul>

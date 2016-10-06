@@ -59,7 +59,23 @@ namespace SeriesWebApp.Tests
                 Assert.Equal(notfound.Value, -1);
             }
         }
- 
+
+        [Fact]
+        public void DetailsShouldIncludeSeasonsAndEpisodesInModel()
+        {
+            using (var context = CreateContext())
+            {
+                var serie = context.Series.First();
+                var controller = new SeriesController(context);
+                var view = controller.Details(serie.Id);
+
+                var result = Assert.IsType<ViewResult>(view);
+                var model = Assert.IsAssignableFrom<Serie>(result.Model);
+
+                Assert.True(model.Seasons.SelectMany(s => s.Episodes).Any());
+            }
+        }
+
         private SeriesContext CreateContext()
         {
             InitializeDatabase();

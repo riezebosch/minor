@@ -24,7 +24,11 @@ namespace SeriesWebApp.Controllers
 
         public IActionResult Details(int id)
         {
-            var serie = _context.Series.FirstOrDefault(s => s.Id == id);
+            var serie = _context
+                .Series
+                .Include(s => s.Seasons)
+                .ThenInclude(s => s.Episodes)
+                .FirstOrDefault(s => s.Id == id);
             if (serie != null)
             {
                 return View(serie);
