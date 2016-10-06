@@ -65,7 +65,7 @@ namespace SeriesWebApp.Controllers
                 serie.Title = title;
                 _context.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id });
             }
             else
             {

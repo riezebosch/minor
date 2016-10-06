@@ -102,7 +102,8 @@ namespace SeriesWebApp.Tests
 
                 var result = Assert.IsType<RedirectToActionResult>(view);
                 
-                Assert.Equal(result.ActionName, "Index");
+                Assert.Equal(result.ActionName, "Details");
+                Assert.Equal(serie.Id, result.RouteValues["id"]);
             }
         }
 
