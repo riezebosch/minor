@@ -12,9 +12,6 @@ namespace SeriesWebApp.Tests
 {
     public class SeriesControllerTests
     {
-        DbContextOptions<SeriesContext> options = new DbContextOptionsBuilder<SeriesContext>()
-            .UseSqlite("FileName=temp.db").Options;
-
         [Fact]
         public void IndexShouldIncludeSeasonsAndEpisodesInModel()
         {
@@ -41,7 +38,7 @@ namespace SeriesWebApp.Tests
                 var view = controller.Details(serie.Id);
 
                 var result = Assert.IsType<ViewResult>(view);
-                var model = Assert.IsAssignableFrom<Serie>(result.Model);
+                var model = Assert.IsType<Serie>(result.Model);
 
                 Assert.Equal(serie, model);
             }
@@ -70,7 +67,7 @@ namespace SeriesWebApp.Tests
                 var view = controller.Details(serie.Id);
 
                 var result = Assert.IsType<ViewResult>(view);
-                var model = Assert.IsAssignableFrom<Serie>(result.Model);
+                var model = Assert.IsType<Serie>(result.Model);
 
                 Assert.True(model.Seasons.SelectMany(s => s.Episodes).Any());
             }
@@ -78,11 +75,14 @@ namespace SeriesWebApp.Tests
 
         private SeriesContext CreateContext()
         {
-            InitializeDatabase();
+            DbContextOptions<SeriesContext> options = new DbContextOptionsBuilder<SeriesContext>()
+                .UseSqlite("FileName=temp.db").Options;
+
+            InitializeDatabase(options);
             return new SeriesContext(options);
         }
 
-        private void InitializeDatabase()
+        private void InitializeDatabase(DbContextOptions<SeriesContext> options)
         {
             using (var context = new SeriesContext(options))
             {
