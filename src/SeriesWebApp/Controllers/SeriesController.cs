@@ -19,7 +19,7 @@ namespace SeriesWebApp.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Series.Include(s => s.Seasons).ThenInclude(s => s.Episodes).ToList());
+            return View(_context.Series.ToList());
         }
 
         public IActionResult Details(int id)
@@ -29,6 +29,7 @@ namespace SeriesWebApp.Controllers
                 .Include(s => s.Seasons)
                 .ThenInclude(s => s.Episodes)
                 .FirstOrDefault(s => s.Id == id);
+            
             if (serie != null)
             {
                 return View(serie);

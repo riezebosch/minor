@@ -13,7 +13,7 @@ namespace SeriesWebApp.Tests
     public class SeriesControllerTests
     {
         [Fact]
-        public void IndexShouldIncludeSeasonsAndEpisodesInModel()
+        public void IndexShouldNotIncludeSeasonsAndEpisodesInModel()
         {
             using (var context = CreateContext())
             {
@@ -23,7 +23,7 @@ namespace SeriesWebApp.Tests
                 var result = Assert.IsType<ViewResult>(view);
                 var model = Assert.IsAssignableFrom<IEnumerable<Serie>>(result.Model);
 
-                Assert.True(model.SelectMany(s => s.Seasons).SelectMany(s => s.Episodes).Any());
+                Assert.False(model.SelectMany(s => s.Seasons).Any());
             }
         }
 
