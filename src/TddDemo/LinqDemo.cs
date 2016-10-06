@@ -352,7 +352,7 @@ namespace TddDemo
 
         private IEnumerable<int> AlleGeheleGetallenBovenNul()
         {
-            for (int i = 0; i <= int.MaxValue; i++)
+            for (int i = 0; i <= 100; i++)
             {
                 yield return i;
             }
